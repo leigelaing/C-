@@ -1,38 +1,119 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-/*
-#include<stdio.h>
-#include<string.h>
-//结构体：自己创造出来的一种类型；
-struct book
+#include <stdio.h>
+enum  weekday
 {
-	char name[20];//C语言设计
-	short price;//55
+	monday, tuseday, wednesday, tuesday, friday, saturday, sunday
+};
+int main(void)
+{
+	enum weekday day = sunday;
+	printf("%d\n",day);
+	return 0;
+}
 
-};//注意分号
+
+
+
+
+/*
+struct student
+{
+	int  age;
+	float score;
+	char sex;
+};
+int  main(void)
+{
+	struct student st = {80,66.6,'F'};
+	struct student *pst = &st; //&st不能做成st
+	pst->age = 88;//第二种方式 //pst->age会转化为（*pst）.age   
+	//pst -> age 等价于（*pst）.age 等价于 pst.age   
+	st.age = 10;  //第一种方式
+	return 0;
+}
+
+*/
+
+
+
+/*
+//赋值和初始化：定义的同时可以整体赋初值
+//如果定义完之后，则只能单个的赋初值
+struct student
+{
+	int age;
+	float score;
+	char sex;
+};
+int  main(viod)
+{
+	struct student st1 = {80,66.6,'F'};//初始化定义的同时赋初值
+	struct student st2;
+	st2.age = 10;
+	st2.score = 88;
+	st2.sex = 'F';
+	printf("%d %f %c\n", st1.age, st1.score, st1.sex);
+	printf("%d %f %c\n", st2.age, st2.score, st2.sex);
+	return 0;
+}
+
+*/
+
+
+
+
+
+/*
+//定义结构体方法三
+struct 
+{
+	int age;
+	float score;
+	char sex;
+}st3;
+int main()
+{
+	return 0;
+}
+
+*/
+
+
+
+
+/*
+//定义结构体方法二
+struct student
+{
+	int age;
+	float score;
+	char sex;
+}st2;   
+int main()
+{
+
+	return 0;
+}
+*/
+
+
+
+
+/*
+//如何定义结构体
+//方法一：先定义一个新的结构体，并没有定义变量
+struct student
+{
+	int age;
+	float score;
+	char sex;
+};
 int  main()
 {
-	//利用结构体类型创建一个该类型的结构体变量
-	struct book  b1 = {"C语言设计",55};
-	printf("书名：%s\n", b1.name);
-	printf("价格：%d\n", b1.price );
-	//name不能直接改，只能通过库函数进行改
-	strcpy(b1.name, "C++");//shring  copy_字符串拷贝——库函数—
-	b1.price = 65;
-	printf("修改后的价格：%d\n", b1.price);
-	struct book*  p = &b1;
-	//.结构体变量 . 成员
-	//-> 结构体指针 -> 成员
-
-
-	printf("%s\n",p->name );
-	printf("%d\n", p->price );
-
-
-	//利用p打印出书名和价格
-	printf("%s\n", (*p).name);
-	printf("%d\n", (*p).price);
+	struct student  st = {80,66.6,'F'};
 	return 0;
 }
+
 */
 
 
@@ -40,99 +121,50 @@ int  main()
 
 
 /*
-int  main()
+#include<malloc.h>
+//动态内存分配可以跨函数使用
+void f(int **q)
 {
-	printf("%d\n", sizeof(char*));
-	printf("%d\n", sizeof(short*));
-	printf("%d\n", sizeof(double*));
-	printf("%d\n", sizeof(int*));
-	//以上输出全部为4；
-	double d = 3.14;
-	double* b = &d;
-	*b = 5.5;    // *b == d
-	printf("%lf %lf\n",*b,d);
-	printf("%d\n",sizeof(b));  //b中存放的是地址，大小与地址线位数有关；
+	*q = (int*)malloc(sizeof(int));
+}
+int main(void)
+{
+	int* p;
+	f(&p);
 	return 0;
 }
-
 */
 
 
 
 /*
+int main(void)
+{
+	int i = 10;
+	int *p = &i;
+	int **q = &p;
+	int ***r = &q;
+	r = &p;
+	//因为r是int***类型，r只能存放int**类型的地址，
+	//明确一下：int*算一种类型，int** 算另一种类型依次类推
+	return 0;
+}
+*/
+
+
+
+
+
+
+/*
+//malloc只能返回第一个字节的地址，不能确定变量要使用几个字节，因此需要（int*）强制类型转换为整型地址，
+//整型地址为4个字节
+
 int main()
 {
-	int a = 10; //4个字节
-	int* p = 0;
-	p = &a;
-	*p;//*——解引用操作符
-	//有一种变量是用来存放地址的——指针变量
-	printf("%p\n", &a);
-	return 0;
-}
-*/
-
-
-
-
-
-
-
-
-/*
-
-//#define 定义标识符常量
-//#define MAX 100
-//#define 定义宏——带参数
-
-
-//函数方式
-int MAX(int x, int y)
-{
-	if (x > y)
-		return x;
-	else
-		return y;
-}
-//宏的定义
-#define MAX1(x,y) (x > y? x : y)
-
-int main()
-{ 
-	int a = 10;
-	int b = 20;
-	//函数
-	int max = MAX(a,b);
-	printf("%d\n",max);
-	//宏的方式
-	int max1 = 0;
-	max1 = MAX1(a, b);
-	//max = (a > b? a : b);
-	printf("%d\n", max1);
-
-	return 0;
-}
-
-*/
-
-
-
-
-
-/*
-//static修饰函数
-//也改变了函数的作用域——说法不准确
-//static 修饰函数改变函数的链接属性
-//函数具有外部链接属性与内部链接属性
-
-//声明外部函数
-extern int ADD(int, int);//声明外部函数
-int main()
-{
-	int a = 10;
-	int b = 20;
-	int sum = ADD(a,b);
-	printf("%d\n", sum);
+	int i = 5;//分配4个字节，静态分配
+	int *p = (int *)malloc(5);//12行分配8个字节的地址，p变量占了4个字节，p所指向的内存也占了4个字节的地址
+	//Ｐ本身所占的内存是静态分配，p所指向的内存空间是动态分配的
 	return 0;
 }
 */
