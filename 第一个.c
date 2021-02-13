@@ -1,66 +1,49 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-//写一个函数，每调用一次这个函数，就会将num加1
-
-
-int main()
-{
-	return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-/*
 #include<string.h>
-/*
-   二分查找：
-   在一个有序数组中查找具体的某个数
-   如果找到返回下标，如果没有找到返回-1
+//编写函数不允许创建临时变量，求字符串长度
 
-int binary_search(int arr[],int k,int sz)//本质上arr是一个指针
+
+//函数方法
+/*
+int  my_strlen(char* str)//str存放的是第一个字符的地址
 {
-	int left = 0;
-	int right = sz - 1;
-	while (left<= right) //相等时还有最后一个元素需要比较
+	int count = 0;
+	while (*str != "\0")
 	{
-		int mid = (left + right) / 2;
-		if (arr[mid] < k)
-		{
-			left = mid + 1;
-		}
-		else if (arr[mid] > k)
-		{
-			right = mid - 1;
-		}
-		else
-		{
-			return mid;
-		}
+		count++;//记录字符串个数
+		str++;//让指针自己往后走
 	}
-	         return -1;
+	return count;
 }
+*/
+
+
+
+
+/*
+//递归方法
+int  my_strlen(char* str)
+{
+	if (*str != '\0') //str 中存放第一个字符的地址
+		return 1 + my_strlen(str + 1);//str+1变为第二个地址，不断加1返回
+	else
+	      return 0;
+}
+//大事化小
+// my_strlen("bit")
+// 1+my_strlen("it")
+//1+1+my_strlen("t")
+//1+1+1+my_strlen("\0")
+//1+1+1+0
+
 int main()
 {
-	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	int k = 7;
-	int sz = sizeof(arr)/sizeof(arr[0]);//数组元素个数
-	int ret = binary_search(arr,k,sz);//arr传递过去的是arr数组首元素的地址；
-	if (ret == -1)
-	{
-		printf("找不到！\n");
-	}
-	else
-	{
-		printf("下标为：%d\n", ret);
-	}
+	char arr[] = "bit";
+	//int len = strlen(arr);//方法一
+	int len = my_strlen(arr);//方法二使用函数
+	//my_strlen(arr)  arr是数组 数组传参    传入的不是整个数组而是首元素的地址
+	printf("len = %d\n", len);
 	return 0;
 }
 */
@@ -68,59 +51,24 @@ int main()
 
 
 
-
-
-
 /*
-int is_leap_year(int x)
+//接受一个整型值（无符号），按照顺序打印它的每一位；
+void  print(int n)
 {
-	if ((x % 4 == 0 && x % 100 != 0) || (x % 400 == 0))
-		return 1;
-	else
-		return 0;
+	if (n > 9)
+	{
+		print(n / 10);
+	}
+	printf("%d\n",n%10);
 }
 int main()
 {
-	int year = 0;
-	for (year = 1000; year <= 2000; year++)
-	{
-		if (1 == is_leap_year(year))
-			printf("%d  ", year);
-	}
+	unsigned int num = 0;
+	scanf("%d", &num);
+	//递归：函数自己调用自己的意思
+	print(num);
 	return 0;
 }
-
-*/
-
-
-
-
-
-
-/*
-//函数实现判断素数
-int is_prime(int n)
-{
-	int a = 0;
-	for (a = 2; a < n; a++)//	for (a = 2; a <= sqrt(n); a++)
-	{
-		if (n % a == 0)
-			return 0;
-	}
-	return 1;
-}
-
-int main()
-{
-	int i = 0;
-	for (i = 100; i <= 200;i++)
-	{
-		if (is_prime(i) == 1)
-			printf("%d\n", i);
-	}
-	return 0;
-}
-
 
 */
 
@@ -130,88 +78,35 @@ int main()
 
 
 
+
+
+
+
+
+
 /*
-int  get_max(int x, int y)//形参出了函数就会自动销毁
-{
-	if (x > y)
-		return x;
-	else
-		return y;
+//主函数自己递归调用自己
+int main()
+ {
+	printf("hehehe");
+	main();     
+	return 0;
 }
+*/
+
+
+
+
+
+/*
+#include"Add.h"
+#include <stdio.h>
 int main()
 {
 	int a = 10;
 	int b = 20;
-	int c = get_max(a, b);
-	int d = get_max(a, get_max(a, b));//函数调用函数
-	int e = get_max(100, 300 + 1);
-	printf("%d\n", c);
-
+	int sum = Add(a, b);
+	printf("%d\n", sum);
 	return 0;
 }
-
-*/
-
-
-
-
-
-
-/*
-//无法实现两个数字的更换
-当实参传给形参的时候，形参实际上为实参的一份临时拷贝
-对形参的修改不会实参的值
-void Swap(int x, int y)
-{
-	int tem = 0;
-	tem = x;
-	x = y;
-	y = tem;
-}
-int  main()
-{
-	int a = 10;
-	int b = 20;
-	Swap(a, b);
-	printf("a = %d  b = %d\n", a, b);
-	return 0;
-}
-*/
-
-
-
-
-
-/*
-//可以实现两个数字的更换
-void Swap(int* x, int* y)
-{
-	int tem = 0;
-	tem = *x;
-	*x = *y;
-	*y = tem;
-}
-int  main()
-{
-	int a = 10;
-	int b = 20;
-	Swap(&a,&b);
-	printf("a = %d  b = %d\n", a, b);
-	return 0;
-}
-*/
-
-
-
-
-/*
-int main()
-{
-	char arr[] = "hello world";
-	memset(arr, '*', 5);//将arr数组中前5个更换为  *  
-	printf("%s\n", arr);
-	return 0;
-}
-//memset
-//memory——内存   set——设置
 */

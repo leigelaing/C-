@@ -1,27 +1,19 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include"第三个.h"   //自己写的头文件用双引号
-// 函数的声明
-// int Add(int, int);//Add(int x, int y);两种声明方式都行
-
+/*
+void test(int n)
+{
+	if (n < 10000)
+	{
+		test(n+1);
+	}
+}
 int main()
 {
-	int a = 10;
-	int b = 20;
-	int sum = 0;
-//函数的调用
-	sum = Add(a, b);
-	printf("%d\n", sum);
+	test(1);
 	return 0;
 }
 
-/*
-//函数的定义
-int Add(int x, int y)
-{
-	int z = x + y;
-	return z;
-}
 */
 
 
@@ -32,28 +24,131 @@ int Add(int x, int y)
 
 
 /*
-//结果为4321  
-//原因：printf函数返回值为字符的个数：43 两个 2  一个 
+void  Add(int* p)
+{
+	(*p)++;
+}
 int main()
 {
-	printf("%d\n", printf("%d", printf("%d", 43)));
+	int num = 0;
+	Add(&num);
+		printf("num = %d\n", num);
+		Add(&num);
+		printf("num = %d\n", num);
+		Add(&num);
+		printf("num = %d\n", num);
+	return 0;
+}
+
+*/
+
+
+
+
+//求第n个 斐波那契数列（不考虑溢出）
+//1 1 2 3 5 8 13 21 34 55   
+//前两个数字之和等于第三个数
+
+/* 
+循环方式
+int   fac(int n)
+{
+	int a = 1;
+	int b = 1;
+	int c = 1;
+	while (n > 2)
+	{
+		c = a + b;
+		a = b;
+		b = c;
+		n--;
+	}
+	return c;
+}
+*/
+/*
+递归方法
+int fac(int n)
+{
+	if (n <= 2)
+	{
+		return 1;
+	}
+	else
+	{
+		return (fac(n - 1) + fac(n - 2));
+	}
+}
+//TDD——测试驱动开发
+
+
+
+int main()
+{
+	int n = 0;
+	int ret = 0;
+	scanf("%d", n);
+	ret = fac(n);
+	printf("%d\n", ret);
 	return 0;
 }
 */
+
+
+
+
+
 
 
 
 
 /*
+//求n的阶乘
+/*递归方式的函数解决的问题：当n<=1 时 阶乘为1   当n > 1时n*facl(n-1)
+
+int  facl(int n)
+{
+	if (n > 0 && n <= 1)
+	{
+		return 1;
+	}
+	else if (n > 1)
+	{
+		int ret = n * facl(n - 1);
+		return ret;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+*/
+
+
+
+/*   函数方式
+int facl(int n)
+{
+	int i = 1;
+	int sum = 1;
+	for (i = 1; i <= n; i++)
+	{
+		sum = sum * i;
+	}
+	return sum;
+}
+*/
+
+/*
 int main()
 {
-	int len = 0;
-	
-	
-	len = strlen("abc");
-	printf("%d\n", len);
-
-	printf("%d\n", strlen("abc"));  //函数的链式访问
+	int n = 0;
+	int ret = 0;
+	scanf("%d", &n);
+	ret = facl(n);
+	printf("%d\n", ret);
 	return 0;
 }
 */
+
