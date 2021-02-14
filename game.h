@@ -1,16 +1,21 @@
-#define  ROW 3
-#define  COL 3
-
-
-
+#define  _CRT_SECURE_NO_WARNINGS 1
+#define ROW 3
+#define COL 3
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+//函数声明
+void Initboard(char board[ROW][COL], int row, int col);
+void DisplayBoard(char board[ROW][COL], int row, int col);
+void PlayMove(char board[ROW][COL], int row,int  col);
+void ComputerMove(char board[ROW][COL], int row, int  col);
+char IsWin(char board[ROW][COL], int row, int col);
 
 
-//函数的声明
- void Initboard(char board[ROW][COL],int row,int col);
- void Displayboard(char board[ROW][COL],int row,int col);
- void Playetmove(char board[ROW][COL],int row,int col);
- void Computemove(char board[ROW][COL],int row,int col);
- char Iswin(char borad[ROW][COL],int row,int col);
+
+//告诉我们四种游戏的状态
+//玩家赢   "*"
+//电脑赢   "#"
+//平局     "Q"
+//继续     "C"
+	
