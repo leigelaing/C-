@@ -1,91 +1,175 @@
-#define  _CRT_SECURE_NO_WARNINGS 1
+ï»¿#define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
+/*
 int main()
 {
-	int i = 0;
-	int k = 0;
-	for (i = 0,k = 0; k = 0;i++,k++)  //ÅĞ¶ÏÌõ¼ş  k=0   0Îª¼Ù¸ù±¾²»½øÑ­»·
-	{
-		k++;
-	}
+	int i = 1;
+	int a = (++i) + (++i) + (++i);
+	printf("%d\n", a);
 	return 0;
 }
+
+*/
+
 
 
 
 
 
 /*
-//È¥µô³õÊ¼Ìõ¼ş£¬½á¹û·¢Éú±ä»¯ÁË£»
-int main()
+int fun()
 {
-	int a = 0;
-	int b = 0;
-	for (; a < 10; a++)
-	{
-		for (; b < 10; b++)//Ã»ÓĞ³õÊ¼Ìõ¼ş£¬bÎŞ·¨ÔÙ´Î³õÊ¼»¯Îª0£»
-		{
-			printf("hehe\n");
-		}
-	}
+	static int count = 1; 
+	return ++count;
+} 
+int main() 
+{
+	int answer; 
+	answer = fun() - fun() * fun(); 
+	printf("%d\n", answer);//è¾“å‡ºå¤šå°‘ï¼Ÿ Â  Â  
 	return 0;
 }
 */
 
 
-
-/*
-//Êä³öÊı×Ö×Ö·û£¬·ÇÊı×Ö×Ö·û²»»áÊä³ö
-int main()
-{
-	int ch = 0;
-	while ((ch = getchar()) != EOF)
-	{
-		if (ch < '0' || ch >'9')
-			continue;
-		putchar(ch);
-	}
-	return 0;
-}
-*/
 
 
 
 /*
 int main()
 {
-	int b[3] = { 0 };
-	scanf("%d", b);
-	printf("%d\n", b);
-    int a = 0;
-	scanf("%d",&a);
-	printf("%d\n",a);
+	int a = 10;
+	int b = 20;
+	int c = a + b * 3;//å…ˆç®—*æ³•
+	printf("%d\n", c);
 	return 0;
 }
 */
+
+
+
+
+
+
+
+/*
+int main() 
+{ 
+	char c = 1;
+	printf("%u\n", sizeof(c));//1  
+	printf("%u\n", sizeof(+c));//4
+	printf("%u\n", sizeof(!c));//1
+	return 0; 
+}
+
+
+*/
+
+
+
+
 
 /*
 int  main()
 {
-	int ret = 0;
-	int ch = 0;
-	char password[20] = { 0 };
-	printf("ÇëÊäÈëÃÜÂë£¡");
-	scanf("%s",password);
-	while ((ch = getchar()) != '\n')
-	{
-		;
-	}
-	printf("ÇëÈ·ÈÏ£¨Y/N£©£º>");
-	ret = getchar();
-	if (ret == 'Y')
-	{
-		printf("È·ÈÏ³É¹¦£¡\n");
-	}
-	else
-	{
-		printf("È·ÈÏÊ§°Ü£¡\n");
-	}
+	    char a = 0xb6; 
+		short b = 0xb600;
+		int c = 0xb6000000; 
+		if (a == 0xb6)
+			printf("a");
+		if (b == 0xb600)
+			printf("b");
+		if (c == 0xb6000000)  
+			printf("c");
+	return 0;
+	//ç»“æœCæ‰“å°  a b ä¸æ‰“å° åŸå› æ˜¯a béƒ½å‘ç”Ÿäº†æ•´å‹æå‡
+}
+
+*/
+
+
+
+
+
+/*
+int main()
+{
+	char a = 3;
+	char b = 127;
+	char c = a + b;
+	printf("%d\n", c);
+	return 0;
+}
+*/
+
+
+
+
+
+
+
+/*
+//å­¦ç”Ÿ
+//struct stu  ç­‰ä»·äº int   float æ˜¯ä¸€ç§ç±»å‹ï¼Œä¸ºäº†åˆ›å»ºå˜é‡
+//åˆ›å»ºä¸€ä¸ªç»“æ„ä½“ç±»å‹â€”â€”struct stu
+struct stu
+{
+	//æˆå‘˜å˜é‡
+	char  name[20];
+	int age;
+	char id[20];
+};
+int  main()
+{
+	//ä½¿ç”¨struct stu è¿™ä¸ªç±»å‹åˆ›å»ºäº†ä¸€ä¸ªå­¦ç”Ÿå¯¹è±¡å«s1å¹¶åˆå§‹åŒ–
+	struct stu s1 = {"å¼ ä¸‰",20,20190305019};
+	int a = 10;
+
+	//è®¿é—®æˆå‘˜å˜é‡æ–¹æ³•ä¸€
+	struct stu* ps = &s1;
+	//ç»“æ„ä½“æŒ‡é’ˆ->æˆå‘˜å
+	printf("%s\n", ps -> name);
+	printf("%s\n", ps -> age);
+	printf("%s\n", ps -> id);
+
+	//è®¿é—®æˆå‘˜å˜é‡æ–¹æ³•äºŒ
+	printf("%s\n", (*ps).name);
+	printf("%s\n", (*ps).age );
+	printf("%s\n", (*ps).id );
+
+	//è®¿é—®æˆå‘˜å˜é‡æ–¹æ³•ä¸‰
+	printf("%s\n",s1.name);
+	printf("%d\n", s1.age);
+	pritnf("%d\n", s1.id);
+	return 0;
+}
+
+*/
+
+
+
+/*
+int get_max(int x, int y)//()æ˜¯è¯­æ³•è§„åˆ™ï¼Œä¸æ˜¯å‡½æ•°è°ƒç”¨æ“ä½œç¬¦
+{
+	return (x > y ? x : y);
+}
+int main()
+{
+	int a = 10;
+	int b = 20;
+	//è°ƒç”¨å‡½æ•°çš„æ—¶å€™çš„ï¼ˆï¼‰å°±æ˜¯å‡½æ•°è°ƒç”¨æ“ä½œç¬¦
+	int max = get_max(a, b);
+	printf("max = %d\n", max);
+	return 0;
+}
+*/
+
+
+/*
+int main()
+{
+	int a[10] = { 0 };
+	 a[4] = 10;
 	return 0;
 }
 */
