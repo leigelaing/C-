@@ -1,34 +1,41 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
+/*
+//这个是数据的存储，问题代码未看懂
+int  main()
+{
+	int n = 9;
+	//0  00000000  00000000000000000001001——补码
+	float* pFloat = (float*)&n;
+	printf("n的值为：%d\n", n);
+	pritnf("*Pfloat的值为 %f\n", *pFloat);
+	//(-1)^0*0.00000000000000000000001001*2^-126
+	*pFloat = 9.0;
+	printf("num的值为：%d\n", n);
+	pritnf("*Pfloat的值为 %f\n", *pFloat);
 
+	float f = 5.5;
+	//5.5;
+	//101.1
+
+
+	return 0;
+}
+*/
 
 
 
 /*
+//这个代码不好，没有看懂
 int main()
 {
-	int i = 0;
-	int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	for (i = 0; i < 12; i++)//指针越界访问
+	char a[1000];
+	int i;
+	for (i = 0; i < 1000; i++)
 	{
-		printf("hehehe\n");
-		arr[i] = 0;
+		a[i] = -1 - i;
 	}
-	return 0;
-}
-
-
-*/
-
-/*
-int main()
-{
-	int a, b, c;
-	a = 5;
-	c = ++a;
-	b = ++c, c++, ++a, a++;//逗号表达式最后一个算是为整个逗号表达式的结果
-	b = a++ + c;
-	printf("a = %d  b = %d c = %d ", a, b, c);
+	printf("%d ", strlen(a));
 	return 0;
 }
 */
@@ -36,6 +43,33 @@ int main()
 
 
 
+/*
+int main()
+{
+	int i = -20;
+	unsigned int j = 10;
+	printf("%d\n", i + j);
+	//按照补码的形式进行计算，最后格式化成有符号的整数
+	//在计算机存储是依据补码进行存储，但实际输出结果为原码，所以求出结果为补码，
+	//要再转换为原码
+	return 0;
+}
+*/
+
+
+
+
+
+
+/*char类型的分为
+signed char
+与unsiged char
+一个字节   8为bit
+有符号char的范围为  -128——127   
+无符号char的范围为   0——255
+*/
+
+
 
 
 
@@ -43,163 +77,38 @@ int main()
 
 
 /*
-int i ;//全局变量——不初始化——默认为0
+//写一段代码确认当前机器的字节序是什么
+//字节序  大端存储与小端存储
+//方法二
+int  check_sys()
+{
+   int a = 1;
+   return * (char*) &a;
+   //取出a的地址   将a的地址强制类型转换为char*类型（提取一个字节）  解引用操作  将a的地址内容释放出来
+   }
+
+
+//方法一
+int  check_sys()
+{
+	int a = 1;
+	char* p = (char*)&a;//指针类型确认提取字节长度  char类型确认提取一个字节长度
+	if (*p == 1)
+		return 1;
+	else
+		return 0;
+}
 int main()
 {
-	i--;
-	//-1
-	//10000000000000000000000000001
-	//11111111111111111111111111110
-	//11111111111111111111111111111
-	if (i > sizeof(i))//sizeof()-计算变量/类型所占内存的大小——结果永远为大于等于0的无符号数；
-	
+	int ret = check_sys();
+	if (ret == 1)
 	{
-		printf(">\n");
+		pritnf("小端");
 	}
 	else
 	{
-		printf("<\n");
+		printf("大端");
 	}
 	return 0;
 }
-
-
-*/
-
-
-
-
-
-
-/*
-int main()
-{
-	int a = 0x11223344;
-	char* pc = (char*)&a;//每次访问一个字节
-   //int型4个字节   11223300;
-	*pc = 0;
-	printf("%x\n", a);
-	return 0;
-}
-*/
-
-
-
-
-
-
-/*
-//结果为0 0 3 4 5；
-int main()
-{
-	int arr[] = { 1, 2, 3, 4, 5 };
-	//arr是首元素地址，原数组为int整型的数组，
-	//现在将int型的数组转化为short型，每次只能访问两个字节，
-	//循环后一共访问int型时的前两个字节
-	short* p = (short*)arr;
-	int i = 0;
-	for (i = 0; i < 4; i++)
-	{
-		//
-		*(p + i) = 0;//每次跨两个字节
-	}
-	//将数组打印出来
-	for (i = 0; i < 5; i++)
-	{
-		printf("%d ", arr[i]);
-	}
-	return 0;
-}
-*/
-
-
-
-
-
-
-
-
-
-/*
-//交换两个数组元素
-int main()
-{
-	int arr1[] = { 1, 3, 5, 7, 9 };
-	int arr2[] = { 2, 4, 6, 8, 10 };
-	int tmp = 0;
-	int i = 0;
-	int sz = sizeof(arr1) / sizeof(arr1[0]);//两个数组长度一样，根据谁求长度都是Ok的
-	for (i = 0; i < sz; i++)
-	{
-		tmp = arr1[i];
-		arr1[i] = arr2[i];
-		arr2[i] = tmp;
-		printf("%d  ", arr1[i]);
-		printf("%d  ", arr2[i]);
-
-	}
-
-	
-
-}
-*/
-
-
-
-
-
-
-
-
-/*
-//倒叙一个数数组
-void  Reverse(int arr[],int sz)
-{
-    int left = 0;
-	int right = sz - 1;
-	
-	while(left < right)
-	{
-	int tmp = arr[left];
-	arr[left] = arr[right];
-	arr[right] = tmp;
-	left++;
-	right--;
-	
-	}
-	
-
-}
-
-*/
-
-
-
-
-
-/*
-//打印数组函数
-void  print(int arr[],int sz)
-{
-	int  i = 0;
-	for (i = 0; i < sz; i++)
-	{
-		printf("%d\n", arr[i]);
-	}
-}
-
-*/
-
-/*
-
-//局部变量与全局变量的问题
-int main()
-{
-	{
-		int a = 0;
-	}
-	printf("%d\n", a);
-	return 0;
-}
-
 */
