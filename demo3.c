@@ -1,118 +1,86 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-#include<stdio.h>
-
-
-
-
-
-
-
-
 /*
-int Add(int x, int y)
+//qsort函数的自己实现
+#include<stdio.h>
+void swap(char* buf1,int* buf2,int width)
 {
-	int z = 0;
-	z = x + y;
-	return z;
+	int i = 0;
+	for (i = 0; i < width; i++)
+	{
+		char tmp = *buf1;
+			*buf1 = *buf2;
+			*buf2 = tmp;
+
+	}
 }
-int main()
-{
-	//指针数组
-	int* arr[10];
-	//数组指针
-	int* (*pa)[10] = &arr;
-	//函数指针
-	int(*pArr)(int, int) = Add;//&Add 
-	int sum = (*pArr)(1, 2);
-	int sum = pArr(1, 2);
-	int sum = Add(1, 2);
-	pritnf("%d\n", sum);
-	//函数指针的数组
-	int(*pArr[5])(int, int);
-	//指向函数指针数组的指针
-	int(*(*ppArr)[5])(int,int) = &pArr;
-	return 0;
-}
-*/
 
-
-
-
-void BubbleSort(int arr[], int sz)
+//实现冒泡排序函数的程序员，不知道未来排序的数据类型是怎样的
+//程序员也不知道待比较两个元素的类型
+void bubble_qsort(void* base,int sz,int width,int (*cmp)(void* e1,void* e2))
 {
 	int i = 0;
 	//趟数
-	for (i = 0; i < sz - 1; i++)
+	for (i = 0; i < sz-1; i++)
 	{
-		//一趟冒泡排序
+		//每趟比较的对数
 		int j = 0;
 		for (j = 0; j < sz - 1 - i; j++)
 		{
-			if (arr[j]>arr[j + 1])
+			//两个数进行比较
+			if (cmp((char*)base + j*width, (char*)base + (j + 1)*width)>0)
+			//变为char类型指针，每次指向一个字节，再加上一个元素的宽度正好每次跳一个元素的大小
 			{
-				int tmp = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = tmp;
+				//交换
+				swap((char*)base + j*width, (char*)base + (j + 1)*width,width);
+			
 			}
+
 		}
 	}
-}
-//qsort函数——可以排序任意类型的数据
 
-int main()
+}
+struct stu
 {
-	//冒泡排序函数
-	//冒泡排序函数只能排序整型数组
-	int arr[] = { 1, 3, 5, 7, 9, 2, 4, 6, 8, 10 };
+	char name[20];
+	int age;
+};
+void test1()
+{
+	int arr[] = { 1, 3, 5, 6, 7, 9, 8, 10 };
 	int sz = sizeof(arr) / sizeof(arr[0]);
-	BubbleSort(arr, sz);
-	int i = 0;
-	for (i = 0; i < sz; i++)
-	{
-		printf("%d   ", arr[i]);
-	}
-	return 0;
+	//使用bubble_qsort函数进行排序，程序员一定知道自己排序的是什么类型，
+	//就应该知道如何比较待排序数组中元素的个数
+	bubble_qsort(arr，sz，sizeof(arr[0]),cmp_int);
 }
-
-
-
-
-
-
-
-
-
-/*
-void print(char* str)
+void test2()
 {
-	printf("hehe:%s", str);
-}
-void test(void(*p)(char*))
-{
-	printf("test\n");
-	p("bit");
+	struct stu s[3] = { { "zhangsan", 23 }, { "lisi ", 43 }, { "wangwu", 12 } };
+	int sz = sizeof(s) / sizeof(s[0]);
+	bubble_qsort(s, sz, sizeof(s[0]));
 }
 int main()
 {
-	test(print);
+	test1();
+	test2();
 	return 0;
 }
-
 */
 
 
 
+
+
 /*
+void qsort(void* base, size_t num, size_t width, int(*cmp)(const void* e1, const void* e2));
+//qsort
+//第一个参数：待排序数组的首元素地址
+//第二个参数：待排序数组元素的个数
+//第三个参数：待排序数组的每个元素的大小，——单位字节
+//第四个参数：是函数指针，比较两个元素的所用函数的地址——这个函数使用者自己实现
+   //第四个参数 函数的两个参数是：待比较两个元素的地址
 int main()
 {
-	int arr[10] = { 0 };
-	int(*p)[10] = &arr;//取数组的地址  指针数组
-	int(*pf)(int, int);//函数指针
-	int(*pfArr[4])(int, int);//pfArr是一个数组——函数指针数组
-	//ppArr是一个指向函数指针数组的指针
-	int(*(*ppfArr)[4])(int, int);
-   //ppfArr是一个数组指针，指针指向数组有4个元素；
-	//指向的数组的每个元素的类型是一个函数指针int（*）(int,int);
+
 	return 0;
 }
 */
