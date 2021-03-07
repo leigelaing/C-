@@ -1,174 +1,214 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<assert.h>
 #include<string.h>
-
-
-
+#include<assert.h>
+#include<errno.h>
 /*
-
-
-
-//杨氏矩阵
-//有一个数字矩阵，矩阵的每行从左到右是递增的，矩阵从上到下是递增的，请编写程序在这样的矩阵中查找某个数字是否存在
-//要求：时间复杂度小于0（N）  不能使用遍历进行查找元素
-//假设：1 2 3
-//      4 5 6
-//      7 8 9
-  //1 2 3
-  //4 5 6
-  //3 4 5
-//方法二（重新设计此函数）
-int FindNun(int arr[3][3], int k, int* px, int* py)
-{
-	int x = 0;
-	int y = *py - 1;
-	while (x <= *px - 1 && y >= 0)
-	{
-		if (arr[x][y] > k)
-		{
-			y--;//从列来看，最小的都大，这一列已经可以淘汰了
-		}
-		else if (arr[x][y] < k)
-		{
-			x++;//从行来看最大的都目标还小，所以哪一行已经没用了
-		}
-		else
-		{
-			*px = x;
-			*py = y;
-			return 1;
-		}
-	}
-	//找不到
-	*px = -1;
-	*py = -1;
-	return 0;
-}
+//memset——内存设置
 int main()
 {
-	int arr[3][3] = { { 1, 2, 3 }, { 4, 5, 6 }, { , 7, 8, 9 }, };
-	int k = 7;
-	int x = 3;
-	int y = 3;
-	//返回型参数
-	int ret = FindNun(arr, k, &x, &y);
-	if (ret == 1)
-	{
-		pritnf("找到了\n");
-		printf("下标是：%d %d\n", x, y);
-	}
-	else
-	{
-		printf("找不到\n");
-	}
+	char arr[10] = "";
+	memset(arr, '#', 10);//10代表字节
 	return 0;
 }
-
-
-
 */
 
+
+
+
 /*
-//方法一 
-int FindNun(int arr[3][3], int k, int row, int col)
-{
-	int x = 0;
-	int y = col - 1;
-	while (x <= row - 1 && y >= 0)
-	{
-		if (arr[x][y] > k)
-		{
-			y--;//从列来看，最小的都大，这一列已经可以淘汰了
-		}
-		else if (arr[x][y] < k)
-		{
-			x++;//从行来看最大的都目标还小，所以哪一行已经没用了
-		}
-		else
-		{
-			return 1;
-		}
-	}
-	//找不到
-	return 0;
-}
 int main()
 {
-	int arr[3][3] = { { 1, 2, 3 }, { 4, 5, 6 }, { , 7, 8, 9 }, };
-	int k = 7;
-	int ret = FindNun(arr, k, 3, 3);
-	if (ret == 1)
-	{
-		pritnf("找到了\n");
-	}
-	else
-	{
-		printf("找不到\n");
-	}
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	int arr2[] = { 1, 2, 3, 4, 5 };
+	int ret = memcmp(arr1, arr2, 8);//8代表的字节
+	printf("%d\n", ret);
 	return 0;
 }
 
 */
 
 
+
+
+
+
+
+
+
+
+
+
 /*
-//这个方法：abcedfabcdef  就包含了所有可能出现的情况  进而进一步进行比较
-int is_left_move(char* str1,char* str2)
+//memmove函数的模拟实现
+//   dest < src ——只能前->后 换
+//dest > src && dest <src+count  ——只能后->前 换
+//dest > src+count  前后都行
+void* my_memmove(void* dest, const void* src, size_t count)
 {
-	//规避字符串长度根本不相等问题还能找到子串的问题
-	int len1 = strlen(str1);
-	int len2 = strlen(str2);
-	if (len1 != len2)
+	void* ret = dest;
+	assert(dest != NULL);
+	assert(src != NULL);
+	//方法二
+	if (dest < src || dest>(char*)src + count)
 	{
-		return 0;
+		//前->后
+	}
+	else
+	{
+		//后->前
+	}
+
+
+
+
+
+	
+	
+	//方法一
+	/*
+	if (dest < src)
+	{
+		//前->后
+		while (count--)
+		{
+			*(char*)dest = *(char*)src;
+			++(char*)dest;
+			++(char*)src;
+		}
+	}
+	else
+	{
+		//后 -> 前
+		*((char*)dest + count) = *((char*)src + count);//注意将int4字节变为1字节，然后count进来先 -- 
+		//然后 进来刚好指向需要的那个字节
 	}
 	
-	//1.在str1字符串后面追加一个str1字符串
-	//使用strcat库函数（本函数使用不能自己给自己追加，
-	//原因是  在追加过程中首先找到自己的\0 然后将自己第一个元素放在\0的位置，但是停止时又需要\0停止，此时已经\0被换了，无法停止）  
-	//或者strncat 库函数（这个可以）
-	//strcat(str1,str1);这个不能用
-	strncat(str1, str1, 6);  //这个函数停止 的原理是根据个数进行停止，压根不用\0作为停止标志 所以自己追加自己不影响
-	//2.判断str2指向的字符串是否是str1指向的字符串的子串
-	//strstr——找子串的
-	   char* ret = strstr(str1,str2);
-	   if (ret == NULL)
-	   {
-		   return 0;
-	   }
-	   else
-	   {
-		   return 1;
-	   }
+	return ret;
 }
+*/
+
+
+
+
+
+
+
+
+/*
+struct S
+{
+	char name[20];
+	int age;
+};
+//模拟实现memcpy
+void* my_memcpy(void* dest, const void* src, size_t num)//size_t C语言中规定为无符号整型
+{
+	//实现原理：将每个指针强制类型转换为char* 类型  然后每一个字节都进行单字节拷贝
+	
+	void* ret = dest;//记录一下初始地址位置
+	assert(dest != NULL);//判断不是空指针
+	assert(src != NULL);
+	while (num--)//数组一共多少字节，每次拷贝一个字节，然后直到拷贝到num==0为止，while循环等于0时为假，不再拷贝
+	{
+		//void* 类型的指针不能进行加减运算，必须先强制类型扎转换为char* ，++ 先运行，再强制类型转换
+		
+		*(char*)dest = *(char*)src; //先强制类型转换，然后然后再解引用操作，Ok了
+		++(char*)dest;
+		++(char*)src;
+	}
+	    return ret;
+		
+}
+//本程序需要实现的的是将 12345 拷贝在 34567 中
+//实际是没有办法实现的memcpy不处理重叠问题
+//C语言标准：
+//memcpy 只要处理 不重叠的内存拷贝就可以
+//memmove 处理重复内存拷贝
+
 int main()
 {
-	char arr1[] = "abcdef";
-	char arr2[] = "cdefab";
-	int ret = is_left_move(arr1, arr2);
-	if (ret == 1)
-	{
-		printf("yes\n");
-	}
-	else
-	{
-		printf("NO\n");
-	}
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	int arr2[10] = { 0 };
+	//arr1中的数字拷贝到arr2中
+	memcpy(arr2,arr1,sizeof(arr1));
 	return 0;
 }
 
+*/
 
 
 
-//strcat库函数学习
+
+
+/*
 int main()
 {
-	char arr1[30] = "abc";
-	char arr2[] = "def";
-	strcat(arr1,arr2);
-	printf("%s\n", arr1);
+	int arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	int i = 0;
+	my_memcpy(arr+2, arr,20);//
+	//memmove();//处理内存重叠的情况
+
+	for (i = 0; i < 10; i++)
+	{
+		printf("%d ", arr[i]);
+	}
 	return 0;
 }
 */
 
+
+
+/*
+int main()
+{
+	int arr1[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	int arr2[50] = { 0 };
+	int i = 0;
+	my_memcpy(arr2, arr1, sizeof(arr1));
+	for (i = 0; i < 10; i++)
+	{
+		printf("%d ", arr2[i]);
+	}
+	return 0;
+}
+
+
+
+*/
+
+
+
+
+
+/*
+int main()
+{
+	int arr1[] = { 1, 2, 3, 4, 5 };
+	int arr2[5] = { 0 };
+	struct S arr3[] = { { "张三",20 }, { "李四",30 } };
+	struct S arr4[] = { 0 };
+	memcpy(arr4, arr3, sizeof(arr3));//arr3拷贝到arr4 中
+	memcpy(arr2, arr1, sizeof(arr1));//arr1拷贝到arr2 中
+	strcpy(arr2, arr1);
+	return 0;
+}
+*/
+
+
+
+
+
+
+/*
+//strlen函数的实现
+int main()
+{
+	int len1 = strlen("abcdef"); //字符串是有\0的  strlen 函数见到\0就停止基数，\0不计算在内
+	char arr[] = { 'a','b','c','d','e','f'};//数组中的单个字符是没有\0  strlen 函数无法计数没结果为随机值
+	int len2 = strlen(arr);
+	printf("%d\n", len1);
+	printf("%d\n", len2);
+	return 0;
+}
+*/

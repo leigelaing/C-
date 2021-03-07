@@ -1,128 +1,113 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
+#include<string.h>
 #include<assert.h>
+#include<errno.h>
 /*
-//写一个函数，判断一个字符串是否为另一个字符串旋转之后的字符串
-//abcdef
-//bcdefa
-//cdefab
-//defabc
-//efabcd
-//fabcde
-int is_left_move(char* s1, char* s2)
-{
-	int len = strlen(s1);//求出s1的长度
-	int i = 0;
-	for (i = 0; i < len; i++)//开始旋转，从一个开始一直每个都旋转一次
-	{
-
-		left_move(s1, 1);//自己定义的函数  使用即可
-		int ret = strcmp(s1, s2);//库函数：作用比较两个字符串
-		if (ret == 0)
-			return 1;
-	}
-        	return 0;//所有情况都比较完才能确认，不是
-}
-
-*/
-
-
-/*
-
+#include<ctype.h>
 int main()
 {
-	char arr1[] = "abcdef";
-	char arr2[] = "cdefab";
-	int ret = is_left_move(arr1, arr2);
-	if (ret == 1)
-	{
-		printf("yes\n");
-	}
-	else
-	{
-		printf("NO\n");
-	}
+	char ch = 'W';
+	int ret1 = islower(ch);//此库函数判断字符串是小写（返回非零值）还是大写（返回零值）
+	int ret2 = isdisit(ch);//判断是否为数字字符  是  （返回非零值）  否（返回零值）
+	printf("%d\n", ret1);
+	char ch = tolower('Q');//此函数的作用：大写字母转小写字母   如果输入是小写就不动了
+	putchar(ch);//putchar是打印字符
+	
 
-	return 0;
-}
-
-*/
-
-
-
-
-
-
-
-
-
-
-/*
-//题目内容：实现一个函数，可以左旋字符串的K个字符
-//例如：abcd 左旋一个字符 bcda
-//      abcd 左旋两个字符 cdab
-
-
-
-//三步翻转法
-//abcdef
-//ba fedc
-//cdefab
-//逆序字符串函数
-void reverse(char* left, char* right)
-{
-	assert(left != NULL);
-	assert(right != NULL);
-	while (left < right)
-	{
-		char tmp = *left;
-		*left = *right;
-		*right = tmp;
-		left++;
-		right--;
-	}
-}
-void left_move(char* arr, int k)
-{
-	assert(arr);
-	int len = strlen(arr);
-	assert(k<=len);
-	reverse(arr, arr + k - 1);//逆序左边
-	reverse(arr + k, arr + len - 1);//逆序右边
-	reverse(arr, arr + len - 1);//逆序整体
-}
-
-/*
-//暴力求解法（方法一）
-void left_move(char arr[], int k)//void left_move(char* arr, int k)一样的
-{
-    assear(arr!=NULL);
+	//将那句话中的大写字母全部转为小写
+	char arr[] = "I Am A Student";
 	int i = 0;
-	int len = strlen(arr);//求数组的元素个数
-	for (i = 0; i < k; i++)//左旋几个元素就循环几次
+	while (arr[i])
 	{
-		//左旋一个字符
-		//1
-		char tmp = *arr;  //拿出第一个元素
-		int j = 0;
-		for (j = 0; j < len - 1; j++) //每个元素拿出来往前循环
+		if (issupper(arr[i]))//
 		{
-			*(arr + j) = *(arr + j + 1);
+			arr[i] = tolower(arr[i]);
 		}
-		//3
-		*(arr + len - 1) = tmp;  //将第一个元素放在 最后一个位置
+		i++;
 	}
-
-}
-*/
-/*
-int main()
-{
-	char arr[] = "abcdef";
-	left_move(arr, 2);
 	printf("%s\n", arr);
 	return 0;
 }
+
 */
 
 
+
+
+/*
+//strerror库函数学习
+//作用：将C语言中的错误码，翻译为对应的错误信息
+int main()
+{
+	//错误码      错误信息
+	//0     ——  No error
+	//1     ——  Operation not permitted
+	//2     ——  No such file or directory
+	//…………依次类推
+	
+	
+	//使用函数一定要引用头文件
+	//头文件  errno 的意思是一个全局的错误码的变量
+	//当C语言的库函数在执行过程中，发生了错误，就会把对应的错误码 赋值到errno 中
+	char* str = strerror(errno);
+	printf("%s\n", str);
+	//打开文件
+	//
+	FILE* pf = fopen("test.txt", "r");
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+	}
+	else
+	{
+		printf("open file success\n");
+	}
+	return 0;
+}
+
+*/
+
+
+
+
+
+/*
+
+//strtok库函数学习  作用 ：分隔出字符串  
+//192.168.31.121
+//192 168 31 121 ——strtok
+//zpw@bitedu.tech
+//zpw bitedu tech
+int main()
+{
+	char arr[] = "zpw@bitedu.tech";
+	char* p = "@.";
+	//zpw@bitedu.tech
+	char buf[1024] = { 0 };
+	strcpy(buf, arr);
+	//切割buf中的字符串
+	
+	char* ret = NULL;
+	for (ret = strtok(arr, p); ret != NULL; ret = strtok(NULL, p))
+	//这个代码要看懂 要看课件
+	
+	{
+		printf("%s\n", ret);
+	}
+	
+	
+	
+	
+	//写法二
+	char* ret = strtok(arr, p);
+	printf("%s\n", ret);
+	ret = strtok(NULL, p);
+	printf("%s\n", ret);
+	ret = strtok(NULL, p);
+	printf("%s\n", ret);
+
+	return 0;
+}
+
+*/
