@@ -1,68 +1,57 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<string.h>
-#include<assert.h>
-#include<errno.h>
+#include<stddef.h>
 /*
-#include<ctype.h>
+//联合 — 联合体  ——共用体——共用体就是共同利用了同一块空间
+struct S
+{
+	char a;
+};
+enum A
+{
+
+};
+union Un
+{
+
+};
 int main()
 {
-	char ch = 'W';
-	int ret1 = islower(ch);//此库函数判断字符串是小写（返回非零值）还是大写（返回零值）
-	int ret2 = isdisit(ch);//判断是否为数字字符  是  （返回非零值）  否（返回零值）
-	printf("%d\n", ret1);
-	char ch = tolower('Q');//此函数的作用：大写字母转小写字母   如果输入是小写就不动了
-	putchar(ch);//putchar是打印字符
-	
-
-	//将那句话中的大写字母全部转为小写
-	char arr[] = "I Am A Student";
-	int i = 0;
-	while (arr[i])
-	{
-		if (issupper(arr[i]))//
-		{
-			arr[i] = tolower(arr[i]);
-		}
-		i++;
-	}
-	printf("%s\n", arr);
 	return 0;
 }
-
 */
 
 
 
 
 /*
-//strerror库函数学习
-//作用：将C语言中的错误码，翻译为对应的错误信息
+//枚举
+//枚举类型
+enum Sex
+{
+	//枚举的可能取值——枚举常量  
+	MALE = 2 ,
+	FEMALE = 3,
+	SECRET = 4
+};
+
+#define RED 0;
+#define GREEN 1;
+#define BLUE 2;
+
+enum  Color
+{
+  //枚举常量默认从零开始 依次递增1   也可以重新赋初始值
+	RED,   //0
+	GREEN, //1
+	BLUE   //2
+};
 int main()
 {
-	//错误码      错误信息
-	//0     ——  No error
-	//1     ——  Operation not permitted
-	//2     ——  No such file or directory
-	//…………依次类推
-	
-	
-	//使用函数一定要引用头文件
-	//头文件  errno 的意思是一个全局的错误码的变量
-	//当C语言的库函数在执行过程中，发生了错误，就会把对应的错误码 赋值到errno 中
-	char* str = strerror(errno);
-	printf("%s\n", str);
-	//打开文件
-	//
-	FILE* pf = fopen("test.txt", "r");
-	if (pf == NULL)
-	{
-		printf("%s\n", strerror(errno));
-	}
-	else
-	{
-		printf("open file success\n");
-	}
+	enum Sex s = MALE;
+	enum Color c = BLUE;//BLUE等于2，但不能将2赋给c 因为2为int型数据
+	printf("%d %d %d\n", RED, GREEN, BLUE);
+	printf("%d %d %d\n", MALE, FEMALE, SECRET);
 	return 0;
 }
 
@@ -73,41 +62,94 @@ int main()
 
 
 /*
-
-//strtok库函数学习  作用 ：分隔出字符串  
-//192.168.31.121
-//192 168 31 121 ——strtok
-//zpw@bitedu.tech
-//zpw bitedu tech
+//位段——二进制位
+//位段的作用可以节省空间
+//A就是一个结构体位段类型
+//位段不支持跨平台
+struct S 
+{ 
+	char a : 3;  
+	char b : 4; 
+	char c : 5;  
+	char d : 4;
+};
 int main()
 {
-	char arr[] = "zpw@bitedu.tech";
-	char* p = "@.";
-	//zpw@bitedu.tech
-	char buf[1024] = { 0 };
-	strcpy(buf, arr);
-	//切割buf中的字符串
-	
-	char* ret = NULL;
-	for (ret = strtok(arr, p); ret != NULL; ret = strtok(NULL, p))
-	//这个代码要看懂 要看课件
-	
-	{
-		printf("%s\n", ret);
-	}
-	
-	
-	
-	
-	//写法二
-	char* ret = strtok(arr, p);
-	printf("%s\n", ret);
-	ret = strtok(NULL, p);
-	printf("%s\n", ret);
-	ret = strtok(NULL, p);
-	printf("%s\n", ret);
-
+	struct S s = { 0 };
+	s.a = 10;
+	s.b = 12;
+	s.c = 3; 
+	s.d = 4;
 	return 0;
 }
+*/
 
+
+
+
+
+
+
+
+
+
+/*
+struct A
+{
+	int a : 2; //a只需要2个比特位就足够
+	int b : 5; //b只需要5个比特位就足够
+	int c : 10;//c只需要10个比特位就足够
+	int d : 30;//d只需要30个比特位就足够
+//一共需要47个bit   ——6个字节*8 == 48bit
+	//注意定义位段类型时，后面的数字不能大于类型的字节数
+};
+int main()
+{
+	struct A s;
+	printf("%d\n", sizeof(s));//解果为：8个字节
+	return 0;
+}
+*/
+
+
+
+
+
+
+/*
+//结构体传参
+struct S
+{
+	int a;
+	char c;
+	double d;
+};
+
+void Init(struct S tmp)
+{
+	tmp.a = 100;
+	tmp.c = 'w';
+	tmp.d = 3.14;
+}
+
+//传值
+void print1(struct S tmp)
+{
+	printf("%d,%c,%lf\n", tmp.a ,tmp.c  ,tmp.d  );
+}
+//传址
+void print2( const struct S* ps)
+{
+	printf("%d,%c,%lf\n", ps->a, ps->c, ps->d);
+}
+
+int main()
+{
+	struct S s = { 0 };
+	Init(&s);
+	print1(s);
+	print2(&s);
+	printf("%d\n", s.a);
+	return 0;
+}
 */

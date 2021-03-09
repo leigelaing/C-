@@ -1,44 +1,55 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-#include<stdio.h>
-int main() 
+
+#include"contact.h"
+
+void menu()
 {
-	int n = 9;
-	float *pFloat = (float *)&n;
-	printf("n的值为：%d\n", n);
-	printf("*pFloat的值为：%f\n", *pFloat);
-	*pFloat = 9.0;
-	printf("num的值为：%d\n", n);
-	printf("*pFloat的值为：%f\n", *pFloat);
-	return 0;
+	printf("************************************\n");
+	printf("****1.add       2.del        *******\n");
+	printf("****3.search    4.modify     *******\n");
+	printf("****5.show      6.sort       *******\n");
+	printf("****      0.exit             *******\n");
+	printf("************************************\n");
+	printf("************************************\n");
+
 }
 
-
-
-
-
-
-
-/*
 int main()
 {
-	double d = 1E10;
-	printf("%lf\n", d);
-	return 0;
- }
+	int input = 0;
+	//创建通讯录
+	struct  Contact con;  //con就是通讯录，里面包含：1000的元素的数和size
+	//初始化通讯录
+	InitContact(&con);
 
-
- */
-
-
-
-/*
-unsigned char i = 0;//char类型无符号数范围0 - 255  for循环条件恒成立  无限死循环
-int main()
-{
-	for (i = 0; i <= 255; i++) 
+	do
 	{
-		printf("hello world\n");
-	}
+		menu();
+		printf("请选择功能！:>");
+		scanf("%d ", &input);
+		switch (input)
+		{
+		case 1:
+			AddContact(&con);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			ShowContact(&con);
+			break;
+		case 6:
+			break;
+		case 0:
+			printf("退出通讯录！\n");
+			break;
+		default:
+			printf("选择错误，请重新选择！\n");
+			break;
+		}
+	} while (input);
 	return 0;
 }
-*/

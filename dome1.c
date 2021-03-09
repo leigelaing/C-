@@ -1,116 +1,24 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
+/*
 #include<stdio.h>
-#include<string.h>
-#include<assert.h>
-
-
-
-
-
-
-
-
-
-
-/*
-//strstr 库函数学习——查找字符串
-//NULL——空指针   NUL/Nul  ——\0   
-//strstr函数  是从开始的那个地址开始一致往后打印  假设 abcdefign 中找def   但打印出来的是defign  
-//abcdefign 中找defh   这个是找不到的
-//abcdefabcdef   这种情况下返回的是defabcdef   是从第一个开始算起
-
-//模拟实现
-char*  my_strstr(const char* p1,const char* p2)
+#include<stddef.h>
+//结构体
+struct S
 {
-	assert(p1 != NULL);
-	assert(p2 != NULL);
-	char* s1 = NULL;
-	char* s2 = NULL;
-	char* cur = (char*)p1;//将const 修饰的指针赋给不受保护的指针会有警告 所以需要强制类型转换一下
-	if (*p2 == '\0')
-	{
-		return (char*)p1;//当 p2为空字符串时直接返回p1
-		
-	}
-	while (*cur) //cur放的是p1的首元素地址，如果为0 那就不用进入循环了，直接返回找不到
-	{
-		s1 = cur; //p1的首元素地址给s1
-		s2 = (char*)p2;   //p2的首元素地址给s2
-		//开始对比
-		while ((*s1 != '\0') && (*s2 != '\0') && (*s1 == *s2))
-			//首元素地址不能等于0  并且两个都还要相等
-		{
-			s1++;
-			s2++;
-		}
-		//对比到s2指向\0  
-		if (*s2 == '\0')
-		{
-			return cur;//找到子串
-		}
-		if (*s1 == '\0')
-		{
-		return cur;//找到子串
-		}
-		     cur++; //循环条件有一个不能满足，重新开始
-	}
-	       return NULL;//找不到子串
-}
-
-
-
+	char c;
+	int i;
+	double d;
+};
 int main()
 {
-	char* p1 = "abcdefjjjjj";
-	char* p2 = "def";
-	char* ret = my_strstr(p1, p2);//在p1中找p2字符串 
-	if (ret == NULL)
-	{
-		printf("子串不存在\n");
-	}
-	else
-	{
-		printf("%s\n", ret);
-	}
+	//offsetof() 是一个宏  计算结构体偏移量;
+	printf("%d\n", offsetof(struct S, c));
+	printf("%d\n", offsetof(struct S, i));
+	printf("%d\n", offsetof(struct S, d));
 	return 0;
 }
 
-*/
 
-
-
-
-
-/*
-int main()
-{
-    //strncmp _字符串比较
-	const char* p1 = "abcdef";
-	const char* p2 = "abcqwer";
-	int ret1 = strcmp(p1, p2);
-	int ret2 = strncmp(p1, p2,3);//p2的前4个字符串与p1进行比较
-	printf("%d\n",ret1);
-	printf("%d\n", ret2);
-	return 0;
-}
-*/
-
-
-
-
-
-/*
-//strncat库函数的学习 
-//追加过程 有三种情况  追加的个数 大于arr2（如果大于arr2不论后面是什么情况只追加完成arr2中的内容然后再添\0就OK） 
-//小于arr2  等于arr2（这两种情况一致，追加完需要实际需要后，最后再添\0,OK）    
-int main()
-{
-	char arr1[30] = "hellow\0xxxxxxxxxx";
-	char arr2[] = "word";
-	strncat(arr1, arr2, 8);  //将arr2中的内容追加在arr1的后面，一共追加arr2中8个字符
-	printf("%s\n", arr1);
-	return 0;
-}
 
 */
 
@@ -120,33 +28,227 @@ int main()
 
 
 
-/*
 
-//strcpy库函数学习  是 将arr2中的内容拷贝在arr1中，拷贝是覆盖。这个函数有问题在于，空间不够也可以完成拷贝
+
+/*
+//结构体内存对齐
+
+//更改默认对齐数
+
+//设置默认对齐数位 4
+#pragma pack(4)  
+struct S
+{
+	char c1;//1
+	double d;//8
+};
+#pragma pack() 
+//取消设置的默认对齐数
 int main()
 {
-	char arr1[5] = "abc";//arr1空间只有3个字节
-	char arr2[] = "hellow  bit";
-	strcpy(arr1, arr2);
-	printf("%s\n", arr1);
+	struct S s;
+	printf("%d\n", sizeof(s));
 	return 0;
 }
+
+
+//S1 S2不同在于 成员变量顺序的不同
+struct S3
+{
+	double d;
+	char c;
+	int i;
+};
+struct S1
+{
+	char c1;
+	int  a;
+	char c2;
+};
+struct S2
+{
+	char c1; 
+	char c2;
+	int  a;
+};
+int main()
+{
+	struct S1 s1 = { 0 };
+	struct S2 s2 = { 0 };
+	struct S3 s3 = { 0 };
+	printf("%d\n", sizeof(s1));//12
+	printf("%d\n", sizeof(s2));//8
+	printf("%d\n", sizeof(s3));//16
+	return 0;
+ }
+
+
+
+
+ */
+
+
+
+
+
+
+
+/*
+//结构体的变量以及初始化
+struct T
+{
+	double weight;
+	short age;
+};
+
+
+struct S
+{
+	char c;
+	struct T st;
+	int  a;
+	double d;
+	char arr[20];
+};
+
+int main()
+{
+	struct S s = { 'c', {55.6,30}, 100, 3014, "would" };//结构体变量的初始化
+	printf("%c,%d,%lf,%s\n", s.c, s.a, s.d, s.arr);
+	printf("%lf\n", s.st.weight);
+	return 0;
+}
+
 */
 
 
+
 /*
-//strncpy库函数的学习（有空模拟实现）
+typedef struct     //匿名结构体类型
+{
+	int data;
+	 Node* next;//下面才重新定义了名字，这个位置不能提前用
+
+}Node;//这个Node是重新定义的 类型名
 int main()
 {
-	char arr1[10] = "abc";//arr1空间只有3个字节
-	char arr2[] = "hellow  bit";
-	strncpy(arr1, arr2,4);//将arr2中前4个字符拷贝在arr1中
-	//如果拷贝的arr1中的字符串够用，没有\0  
-	char arr1[10] = "abc";//
-	char arr2[] = " bit";
-	strncpy(arr1, arr2, 4);
-	//将arr2中前4个字符拷贝在arr1中，此时注意arr2中只有3个字符，要拷贝4个后面的利用\0补够要求
-	printf("%s\n", arr1);
+	struct Node n1;
+	Node n2;
 	return 0;
 }
+
+
+
+
+typedef struct Node
+{
+	int data;
+	struct Node* next;
+
+}Node;//这个Node是重新定义的 类型名
+int main()
+{
+	struct Node n1;
+	Node n2;
+	return 0;
+}
+
+*/
+
+
+
+
+
+
+
+
+/*
+结构体的自引用
+//错误示范
+struct Node
+{
+	int data;//数据    4个字节
+	struct Node n;//错误的写法：不能存放放下一个结点
+//n的字节大小无法计算，n中有data 与n 无法计算大小
+
+};
+
+
+
+//正确示范
+struct Node
+{
+	int data;//数据域    4个字节
+	struct Node* next ;//指针域   4/8个字节     应该存放下一个结点的指针，不断找下一个
+
+};
+
+int main()
+{
+	sizeof(struct Node);
+	return 0;
+}
+
+*/
+
+
+
+
+/*
+
+//匿名结构体类型   
+struct        //没有名字
+{
+	int a;
+	char b;
+	float c;
+}x;   //因为匿名结构体类型没有名字   只能在这个位置根据变量列表创建变量   否则创建不出来的
+
+struct      
+{
+	int a;
+	char b;
+	float c;
+}* px;  //px变为匿名结构体指针类型
+
+int main()
+{
+	px = &x;//这个属于两种不同的类型，不能像 int a = 10；   int*p  = &a   这样进行地址
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+//struct  tab//struct  结构体关键字    tab  结构体标签
+//{
+	    //成员列表
+//} ;     //变量列表
+	
+
+//声明一个结构体类型，
+//声明一个学生类型，是想创建学生变量（对象）
+//描述学生：属性——名字  电话    性别  年龄
+struct  stu
+{
+	char name[20];//名字
+	char tele[12];//电话
+	char  sex[10];//性别
+	int age;//年龄
+}S4,S5,S6;//S4,S5,S6为全局变量
+
+struct  stu S3;//全局变量
+	int main()
+{
+		//创建的结构体变量（局部变量）
+		struct  stu S1;
+		struct  stu S2;
+	return 0;
+}
+
 */
