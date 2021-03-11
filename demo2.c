@@ -1,111 +1,152 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<stdlib.h>
 #include<errno.h>
-#include<windows.h>
-
-//经典面试题
-
-
-
-
-
-
-
-
-
+#include<string.h>
 
 /*
-//改正二
-char*  GetMemory(char* p)
-{
-   p = (char *)malloc(100);
-   return p;
-}
-void Test(void)
-{
-char *str = NULL;
-  str = GetMemory(&str);
-strcpy(str, "hello world");
-printf(str);
+
+1.scanf  /printf  是针对标准输入流/标准输出流格式化输入/输出语句
+2.fscanf/fprintf  是针对所有输入流/所有输出流格式化输入/输出语句
+3.  sscanf  是从字符串中读取格式化数据
+    sprintf   是吧格式化数据输成（存储到）字符串
 
 
-free(str);
-str = NULL;
-}
-int main()
-{
-Test();
-return 0;
-}
+
 */
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
-   改正一
-void GetMemory(char **p) 
+struct S
 {
-	*p = (char *)malloc(100); 
-} 
-void Test(void) 
-{ 
-	char *str = NULL; 
-	GetMemory(&str);
-	strcpy(str, "hello world");  
-	printf(str);
-
-
-	free(str);
-	str = NULL;
-}
-int main()
+	int n;
+	float score;
+	char arr[10];
+};
+int  main()
 {
-	Test();
+
+	struct S s = { 100,3.14f,"abcdef"};
+	struct S tmp = { 0 };
+	char buf[1024] = { 0 };
+	//把格式化的数据转换成字符串存储到buf
+	sprintf(buf, "%d %f %s ", s.n, s.score, s.arr);
+	printf("%s\n", buf);
+	//从buf中读取格式化的数据到tmp中
+	sscanf(buf, "%d %f %s", &(tmp.n), &(tmp.score), tmp.arr);//arr 本身就是首元素地址
+	printf("%d %.2f %s", tmp.n, tmp.score, tmp.arr);
 	return 0;
 }
 */
+/*
+struct S
+{
+	int n;
+	float score;
+	char arr[10];
+};
+int  main()
+{
+	struct S s = { 0 };
+	fscanf(stdin, "%d %f %s", &(s.n), &(s.score), s.arr);//arr 本身就是首元素地址
+	fprintf(stdout,"%d %.2f %s", s.n, s.score, s.arr);
+	return 0;
+}
+
+
+*/
+
+
 
 /*
-//结果是程序崩溃
-//存在内存泄露的问题
-//因为str以值传递的形式给p
-//p是GetMemory函数的形参，只在函数内部有效，等GetMemory函数返回之后，动态开辟的空间尚未释放，并且无法找到，所以造成内存泄露
-void GetMemory(char *p)//p中存放的是str的值  str为NULL  所以p中为NULL
+struct S
 {
-	p = (char *)malloc(100);//将malloc开辟的空间的首地址给了p 此时p中存放首地址，
+	int n;
+	float score;
+	char arr[10];
+};
+int  main()
+{
+	struct S s = { 100, 3.14f, "bit" };
+	FILE* pf = fppen("test.txt", "r");
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//格式化的输入数据
+	fscanf(pf, "%d %f %s", &(s.n), &(s.score), s.arr);//arr 本身就是首元素地址
+	printf("%d %f %s", s.n, s.score, s.arr);
+
+	fclose(pf);
+	pf = NULL;
+	return 0;
 }
-void Test(void)
-{ 
-	char *str = NULL;  
-	GetMemory(str);  //函数运行结束，p变量销毁，什么狗屁都没有
-	strcpy(str, "hello world");
-	//str依旧为空指针，将hello world拷贝在空指针中
-	//空指针不是有效地址，不指向有效的空间
-	//此时程序崩溃，因为hello world 非法访问空间了
-	printf(str);
+
+*/
+
+
+
+/*
+struct S
+{
+	int n;
+	float score;
+	char arr[10];
+};
+int  main()
+{
+	struct S s = { 100, 3.14f, "bit" };
+	FILE* pf = fppen("test.txt", "w");
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//格式化的形式写文件
+	fprintf(pf, "%d %f %s", s.n, s.score, s.arr);
+	fclose(pf);
+	pf = NULL;
+	return 0;
 }
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+/*
 int main()
 {
-	Test();
-
-	//举例
-	char* str = "abcdef";
-	printf("%s\n", str);
+	//从键盘读取一行文本文本信息
+	char buf[1024] = { 0 };
+	fgets(buf, 1024, stdin);//从标准输入读取
+	fputs(buf, stdout);//输出到标准输出流
+	gets(buf);
+	puts(buf);
 	
-	//以下两种写法都OK
-	printf(str);
-	printf("abcdef");
-
 	return 0;
 }
-
 */
-
-
-
-
 
 
 
@@ -114,107 +155,21 @@ int main()
 /*
 int main()
 {
-	//1.对NULL指针的解引用操作
-	int* p = malloc(40);
-	//首选对p进行相关判断
-	*p = 10;//malloc开辟空间失败，对NULL指针解引用操作
+	char buf[1024] = { 0 };//定义一个数组
+	FILE* pf = fopen("test.txt", "w");
+	//打开失败需要判断
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//写文件
+	fputs("hello\n", pf);
+	fputs("world\n", pf);
+	  
 	
-	//2.对动态开辟空间的越界访问
-	int* p = (int*)malloc(40);//10个bit
-	if (p == NULL)
-	{
-		return 0;
-	}
-	//越界访问
-	int i = 0;
-	for (i = 0; i <= 10; i++)
-	{
-		*(p + i) = i;
-	}
-	free(p);
-	p = NULL;
-
-
-	//3对非动态开辟内存使用free释放
-	int a = 10;
-	int *p = &a;
-	//对非动态开辟内存使用free释放
-	free(p);
-	p = NULL;
-
-
-	//4.使用free释放动态开辟内存的一部分
-	int* p = (int*)malloc(40);
-	if (p == NULL)
-	{
-		return 0;
-	}
-	int i = 0;
-	for (i = 0; i < 10;i++)
-	{
-		*p++ = i;//这样写代码，p已经发生变化不再指向刚开始的地址，如果使用free 你释放的是那段空间，
-		//此时确认出问题了
-	}
-	//回收空间
-	free(p);
-	p = NULL;
-
-
-
-	//5.对同一块内存空间的多次释放，
-	int* p = (int*)malloc(40);
-	if (p == NULL)
-	{
-		return 0;
-	}
-	//使用……
-	//释放
-	free(p);
-	p = NULL;
-	//……
-	free(p);
-
-
-
-
-
-	//6.动态开辟内存忘记释放（内存泄露）
-	while (1)
-	{
-		malloc(1);
-		Sleep(1000);
-	}
-
-
-	return 0;
- }
- */
-
-
-
-
-/*
-int main()
-{
-	int* p = (int*)malooc(40);
-	if (p == NULL)
-	{
-		return 0;
-	}
-	//使用
-	int* p2 = realloc(p, 80);
-	if (p2 != NULL)
-	{
-		p = p2;
-	}
-
-	//realloc函数实现 malloc功能
-	//realloc函数直接开辟空间
-	int* p = realloc(NULL, 40);//等价于malloc(40);
-
-
-
-
+	//关闭文件
+	fclose(pf);
+	pf == NULL;
 	return 0;
 }
 
@@ -223,11 +178,27 @@ int main()
 
 
 
-
-
-
-
-
+/*
+int main()
+{
+	char buf[1024] = { 0 };//定义一个数组
+	FILE* pf = fopen("test.txt", "r");
+	//打开失败需要判断
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//读文件
+	fgets(buf, 1024, pf);
+	printf("%s\n", buf);
+	fgets(buf, 1024, pf);
+	printf("%s\n", buf);
+//关闭文件
+	fclose(pf);
+	pf == NULL;
+	return 0;
+}
+*/
 
 
 
@@ -235,12 +206,46 @@ int main()
 /*
 int main()
 {
-	//a是在栈区开辟的空间，free只能给堆区开辟的空间进行释放  所以代码错误
-	int a = 10;
-	int*p = &a;
-	*p = 20;
-	free(p);
-	p = NULL;
+	FILE* pf = fopen("test.txt", "r");//打开test.txt文件，并且以读的方式打开
+	//判断问题
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return 0;
+	}
+	//读文件
+	int ch = fgetc(pf);
+	printf("%c", ch);
+    ch = fgetc(pf);
+	printf("%c", ch);
+    ch = fgetc(pf);
+	printf("%c", ch);
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
+	return 0;
+}
+
+*/
+
+
+
+/*
+int main()
+{
+	FILE* pf = fopen("test.txt", "w");//打开文件，写入
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return 0;
+	}
+	//写文件
+	fputc('b', pf);
+	fputc('i', pf);
+	fputc('t', pf);
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
 	return 0;
 }
 */

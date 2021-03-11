@@ -1,214 +1,127 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<math.h>
-struct student
-{
-	int num;
-	char name[32];
-	float  score;
-
-}stu;//stu 叫结构体变量名
-
-
-
-
-
-
-
-
-
-/*
-//打印菱形
-//   *
-//  ***
-// *****
-//  ***
-//   *
-int main()
-{
-	int line = 0;
-	scanf("%d", &line);
-	//打印上半部分
-	int i = 0;
-	for (i = 0; i < line; i++)
-	{
-		//打印空格
-		int j = 0;
-		for (j = 0; j < line - 1 - i; j++)
-		{
-			printf(" ");
-		}
-		//打印*
-		for (j = 0; j < 2 * i + 1; j++)
-		{
-			printf("*");
-		}
-		    printf("\n");
-	}
-	//打印下半部分
-	for (i = 0; i < line-1; i++)
-	{
-		//打印空格
-		int j = 0;
-		for (j = 0; j <=i ; j++)
-		{
-			printf(" ");
-		}
-		//打印*
-		for (j = 0; j <2*(line-1-i)-1 ; j++)
-		{
-			printf("*");
-		}
-		printf("\n");
-	}
-	return 0;
-}
-*/
-
-
-
-
-/*
-//水仙花数，求出0—100000之间的水仙花数
-//水仙花数指的是三位数
-
-
-//本代码求自幂数   
-
-int main()
-{
-	int i = 0;
-	for (i = 0; i <= 100000; i++)
-	{
-		//判断i是否为水仙花数（自幂数）
-		//1.计算i的位数—n位数
-		int n = 1;//数无论如何都是一位数  所以初始值为1
-		int tmp = i;
-		int sum = 0;
-		while (tmp /= 10)
-		{
-			n++;
-		       //i = i/10
-		}
-			//123/10   n++   商不为零 n++计数
-			//12/10   n++
-		//2.计算i的每一位的n次方之和  sum
-		tmp = i;
-		while (tmp)
-		{
-			sum += pow(tmp % 10, n);
-			tmp /= 10;
-		}
-		//3.比较i == sum
-		if (i == sum)
-		{
-			printf("%d ", i);
-		}
-	}
-	return 0;
-}
-
-*/
-
-
-
-
-
-/*
-//求Sn = a+aa+aaa+aaaa+aaaaa的前五项之和，其中a为一个数字
-int main()
-{
-	int a = 0;
-	int n = 0;
-	int sum = 0;
-	scanf("%d %d", &a, &n);
-	int i = 0;
-	int ret = 0;
-	for (i = 0; i < n; i++)
-	{
-		ret = ret * 10 + 2;
-		sum = sum + ret;
-	}
-	printf("%d\n", sum);
-	return 0;
-}
-*/
-
-
-
-
-/*
+#include<errno.h>
 #include<string.h>
-#include<assert.h>
-//写一个函数逆序字符串的内容
-void reverse(char* str)//str 指向  a
+/*
+int main()
 {
-	assert(str);//这个意思不清楚
-	int len = strlen(str);//使用shrlen函数求出字符串大小
-	char* left = str;//首元素地址
-	char* right = str + len - 1;//  最后一个元素的元素地址
-	while (left < right)
+	int ch = fgetc(stdin);
+	fputc(ch, stdout);
+	return 0;
+}
+*/
+
+
+
+
+/*
+ 从键盘输入
+ 输出到屏幕
+ 键盘&屏幕都是外部设备
+
+ 键盘—标准输入设备—（用stdin代表）
+ 屏幕—标准输出设备—（用stdout代表）
+ 是一个程序默认打开的两个流设备
+
+ stdin   FILE*
+ stdout  FILE*
+ stderr（标准错误输出设备）  FILE*
+ */
+
+ 
+
+
+
+
+
+
+
+
+/*
+int main()
+{
+	FILE* pfWrite = fopen("test.txt", "r");
+	if (pfWrite == NULL)
 	{
-		char tmp = *left;
-		*left = *right;
-		*right = tmp;
-		left++;
-		right--;
+		printf("%s\n", strerror(errno));
+		return 0;
 	}
-}
-int main()
-{
-	char  arr[256] = { 0 };
-	//gets函数，读取一行内容
-	gets(arr);
-	//scanf函数遇见空格就不读取输入值了
-	//scanf("%s ", arr);//abcdef  ——fedcba
-	//逆序函数
-	reverse(arr);
-	printf("%s\n",arr);
+	//读文件
+	printf('%c', pfWrite);
+	printf('%c', pfWrite);
+	printf('%c', pfWrite);
+	//关闭文件
+	fclose(pfWrite);
+	pfWrite = NULL;
 	return 0;
 }
-*/
 
+*/
 
 
 
 /*
 int main()
 {
-	int arr[10] = { 1, 2, 3, 4, 5 };
-	int* p = arr;//arr代表首元素地址
-	//*(p + 2) == p[2] == > *(arr + 2) == arr[2]
-	int aa[2][5] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	FILE* pfWrite = fopen("test.txt", "w");//打开文件只写
+	if (pfWrite == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return 0;
+	}
+	//写文件
+	fputc('b', pfWrite);
+	fputc('i', pfWrite);
+	fputc('t', pfWrite);
+   //关闭文件
+	fclose(pfWrite);
+	pfWrite = NULL;
+	return 0;
+}
+
+*/
+
+
+/*
+int main()
+{
+	//打开文件test.txt
+	//相对路径
+	//  .. 表示上一级路径
+	// .  表示当前路径
+	fopen("../../test.txt", "r");//r代表需要怎样的操作
+	fopen("test.txt", "r");//
+	//绝对路径的写法
+	fopen("C:\\2020_code\\84班\\test_5_6\\test.txt", "r");//注意路径填写过程中的转义问题  
 	
-	int* ptr1 = (int*)(&aa + 1);
-	//&aa  是取出整个二维数组的地址，加1跳过整个二维数组，然后再将数组强制类型转换为int* 
-	int* ptr2 = (int*)(*(aa + 1));
-	//首先aa代表第一行的数组名，加1 等于跳过一整行，再将地址强制类型转换为int*型
-	printf("%d %d\n", *(ptr1 - 1), *(ptr2 - 1));
-	//*(ptr1 - 1)  等于将ptr1指向往回指向一个int型，结果是指向10；
-	//*(ptr2 - 1)  等于ptr2此时指向6，然后再减一指向5，最后结果就是5 
+	//fopen函数返回FILE*的 指针类型
+	//pf指向test.txt的文件信息区    然后再操作text.txt 文件
+
+	FILE* pf = fopen("test.txt", "r");
+	//打开文件可能失败，因此要先判断
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));//返回错误原因
+	}
+	//打开文件
+	//读文件
+
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
 	return 0;
 }
-
 */
-
-
-
-
-
-
 
 
 /*
 int main()
 {
-	int a[5][5];
-	int(*p)[4];
-	p = a;     //int(*)[4]—————————————int(*)[5]
-	printf("%p,%d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
-
+	int a = 10000;   
+	FILE* pf = fopen("test.txt", "wb");  
+	fwrite(&a, 4, 1, pf);//二进制的形式写到文件中   
+	fclose(pf); 
+	pf = NULL;
 	return 0;
 }
-
 */
