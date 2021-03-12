@@ -1,37 +1,4 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-#include<stdio.h>
-#include<errno.h>
-#include<string.h>
-/*
-int main()
-{
-	int ch = fgetc(stdin);
-	fputc(ch, stdout);
-	return 0;
-}
-*/
-
-
-
-
-/*
- 从键盘输入
- 输出到屏幕
- 键盘&屏幕都是外部设备
-
- 键盘—标准输入设备—（用stdin代表）
- 屏幕—标准输出设备—（用stdout代表）
- 是一个程序默认打开的两个流设备
-
- stdin   FILE*
- stdout  FILE*
- stderr（标准错误输出设备）  FILE*
- */
-
- 
-
-
-
 
 
 
@@ -40,88 +7,126 @@ int main()
 /*
 int main()
 {
-	FILE* pfWrite = fopen("test.txt", "r");
-	if (pfWrite == NULL)
+	//strerror——把错误码对应的错误信息的字符串地址返回
+  // printf("%s\n",strerror(errno));
+	//perror函数
+	FILE* pf = fopen("test2.txt", "r");
+	if (pf = NULL)
 	{
-		printf("%s\n", strerror(errno));
+		perror("open file test2.txt");
+		//这个函数的好处在于，1.不用引入头文件，
+		//2.打印格式是  （open file test2.txt：  错误信息）这样看起来更加清晰      
+		
 		return 0;
 	}
 	//读文件
-	printf('%c', pfWrite);
-	printf('%c', pfWrite);
-	printf('%c', pfWrite);
-	//关闭文件
-	fclose(pfWrite);
-	pfWrite = NULL;
-	return 0;
-}
-
-*/
-
-
-
-/*
-int main()
-{
-	FILE* pfWrite = fopen("test.txt", "w");//打开文件只写
-	if (pfWrite == NULL)
+	int ch = 0;
+	while ((ch = fgetc(pf)) != EOF)
 	{
-		printf("%s\n", strerror(errno));
-		return 0;
+		putchar(ch);
 	}
-	//写文件
-	fputc('b', pfWrite);
-	fputc('i', pfWrite);
-	fputc('t', pfWrite);
-   //关闭文件
-	fclose(pfWrite);
-	pfWrite = NULL;
-	return 0;
-}
-
-*/
-
-
-/*
-int main()
-{
-	//打开文件test.txt
-	//相对路径
-	//  .. 表示上一级路径
-	// .  表示当前路径
-	fopen("../../test.txt", "r");//r代表需要怎样的操作
-	fopen("test.txt", "r");//
-	//绝对路径的写法
-	fopen("C:\\2020_code\\84班\\test_5_6\\test.txt", "r");//注意路径填写过程中的转义问题  
-	
-	//fopen函数返回FILE*的 指针类型
-	//pf指向test.txt的文件信息区    然后再操作text.txt 文件
-
-	FILE* pf = fopen("test.txt", "r");
-	//打开文件可能失败，因此要先判断
-	if (pf == NULL)
+	if (ferror(pf))
 	{
-		printf("%s\n", strerror(errno));//返回错误原因
+		printf("error\n");
 	}
-	//打开文件
-	//读文件
+	else if (feof(pf))
+	{
+		printf("end of file\n");
+	}
 
-	//关闭文件
 	fclose(pf);
 	pf = NULL;
 	return 0;
 }
+
 */
+
+
 
 
 /*
 int main()
 {
-	int a = 10000;   
-	FILE* pf = fopen("test.txt", "wb");  
-	fwrite(&a, 4, 1, pf);//二进制的形式写到文件中   
-	fclose(pf); 
+	//EOF 
+	//feof();//EOF_end  of   file  ——文件结束标志
+	FILE* pf = fopen("test.txt", "r");
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	int ch = fgetc(pf);
+	printf("%d\n", ch);//-1
+
+
+	fclose(pf);
 	pf = NULL;
 	return 0;
 }
+
+
 */
+
+
+
+/*
+int  main()
+{
+	FILE* pf = fopen("test.txt", "r");
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//1.定位文件指针
+	//fseek(pf,-2,SEEK_END);
+	int ch = fgetc(pf);
+	int pos = ftell(pf);
+	printf("%d\n", pos);
+	
+	rewind(pf);
+	 ch = fgetc(pf);
+	printf("%c\n", ch);
+	fcolse(pf);
+	pf = NULL;
+	return 0;
+}
+
+*/
+
+
+
+
+/*
+struct S
+{
+	char name[20];
+	int age;
+	double score;
+};
+int main()
+{
+	struct S s = { "张三", 20, 55.6 };
+	struct S tmp = { 0 };
+	//打开文件
+	FILE* pf = fopen("test.txt", "wb");
+	FILE* pf = fopen("test.txt", "rb");
+	//判断是否打开
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//二进制的形式写文件
+	fwrite(&s, sizeof(struct S), 1, pf);
+	//翻译：将s结构体变量，大小为struct S大小空间  写一个，  写在pf指向的文件中
+	
+	//二进制的形式读文件
+	fread(&tmp, sizeof(struct S), 1, pf);
+	//翻译：将tmp结构体变量中，读入sizeof(struct S)大小的  一个结构体     从pf指向的文件中读出
+	
+	printf("%s %d %lf ", tmp.name, tmp.age, tmp.score);
+	fclose(pf);
+	pf = NULL;
+	return 0;
+}
+
+*/
+
