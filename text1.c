@@ -1,264 +1,93 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-
-
-
-
-
-
-
-/*
-#define CAT(x,y)  x##y
 int main()
 {
-	int Class84 = 2019;
-	//printf("%d\n",Class84);
-	printf("%d\n", CAT(Class, 84));
-	//用宏翻译过来
-	//printf("%d\n", CAT(Class##84));
-	//printf("%d\n", CAT(Class84));
-	return 0;
-}
-*/
+	//数组名是首元素地址
+	//1.sizeof（数组名）——数组名表示整个数组
+	//2.&数组名 ——数组名表示整个数组
 
 
 
-
-
-
-/*
-//结果:the value of a is 10
-//     the value of b is 20
-//宏约定大写
-#define PRINT(x)  printf("the value of "#x" is %d\n",x)
-
-int main()
-{
-	int  a = 10;
-	int b = 20;
-	PRINT(a);
-	//printf("the value of ""a"" is %d\n", a);   替换后的效果
-
-	PRINT(b);
-	return 0;
-}
-*/
-
-
-
-
-
-
-/*
-//printf可以自动合并字符串
-int main()
-{
-	printf("hellow  world\n");
-	printf("hellow " " world\n");
-	printf("hel ""low"  "world\n");
-	return 0;
-}
-
-*/
-
-
-
-
-/*
-void print(int a)
-{
-	printf("the value of a is %d\n", a);
-}
-int main()
-{
-	int a = 10;
-	int b = 20;
-	//printf("the value of a is %d\n", a);
-	printf(a);
-	printf(b);//  把输出结果中的a 变为 b   但函数做不到  必须找 宏
-	return 0;
-}
-
-
-*/
-
-
-/*
-#define  MAX 100
-#define   DOUBLE(x)  ((x)+(x))   //注意加括号的问题
-int main()
-{
-	int a = 5;
-	int ret = 10 * DOUBLE(MAX + MAX);//先调用，然后再进行宏
-	//int ret = 10 * a + a == 55
-	printf("%d\n", MAX);
-	printf("%d\n", ret);
-	return 0;
-
-}
-*/
-
-/*
-//用宏结果输出100  
-#define   DOUBLE(x)  ((x)+(x))   //注意加括号的问题
-int main()
-{
-	int a = 5;
-	int ret = 10 * DOUBLE(a);
-	//int ret = 10 * a + a == 55
-	printf("%d\n", ret);
-	return 0;
-
-}
-
-
-*/
-
-
-
-/*
-
-#define SQUARE( x )  (x)* (x)     //SQUARE是平方的意思
-//带括号为了安全
-int main()
-{
-	int ret = SQUARE(5);
-	//int ret = 5 * 5;
-	printf("%d\n", ret);
-	int  ret = SQUARE(5 + 1);
-	pritnf("%d\n", ret); //5 + 1 * 5 + 1    按照顺序计算  结果11    宏只传参不做运算   
-	//要想得到整体结果  （x）*（x）    就可以
-
-	return 0;
-}
-
-*/
-
-
-
-
-
-
-/*
-#define MAX 100;
-int main()
-{
-	int a = MAX;  
-	;                   //#define  后面加;  相当于后面加空语句
-	printf("%d\n",MAX);
-	printf("%d\n",a);
-	return 0;
-}
-
-*/
-
-
-
-
-
-
-
-/*
-#define MAX 100
-#include <stdio.h>
-#define  MAX 100
-#define STR "哈哈"
-#define reg  register
-#define do_forever for(;;)
-int main()
-{
-	do_forever;//死循环替换
-	reg int a;
-	register int  a;//预定义替换了
-	int  max = MAX;
-	int mag = 100;
-	printf("%d\n", max);
-	printf("%s\n", STR);
-	return 0;
-}
-
-*/
-
-
-
-
-/*
-//VC编译器不遵循ANSI C  
-int main()
-{
-	printf("%d\n", __STDC__);
-	return 0;
-}
-*/
-
-
-
-
-
-
-
-
-/*
-//预定义符号
-int main()
-{
-	printf("%s\n", __FILE__);
-	printf("%d\n", __LINE__);
-	printf("%s\n", __DATE__);
-	printf("%s\n", __TIME__);
-
-	//写日志文件
-	int arr[10] = { 0 };
-	int i = 0;
-	FILE* pf = fopen("log.txt", "w");
-	for (i = 0; i < 10; i++)
-	{
-		arr[i] = i;
-		fprintf(pf, "file:%s  line:%d   date: %s  time: %s  i = %d\n",
-			__FILE__, __LINE__, __DATE__, __TIME__);//在记事本打来  .txt 就能看见结果 
-		printf("%s\n",__FUNCTION__ );//打印函数名
+	//一维数组 
+	int a[] = {1,2,3,4}; 
+	printf("%d\n",sizeof(a));//16
+	printf("%d\n",sizeof(a+0));//4  数组名表示首元素地址 a+0代表首元素地址
+	printf("%d\n",sizeof(*a));//4  数组名是首元素地址，*a是首元素
+	printf("%d\n",sizeof(a+1)); //4  首元素地址加1  第二个元素地址，依旧是4
+	printf("%d\n",sizeof(a[1]));// 4
+	printf("%d\n",sizeof(&a)); // 4  取出的是数组的地址没有错，但地址依旧是地址  所以4个字节
+	printf("%d\n",sizeof(*&a)); //16  （* &a）  &a取出数组的地址，解引用是整个数组元素  所以16
+	printf("%d\n",sizeof(&a+1));//4  &a + 1  整体数组地址加1 后的地址但依据是地址  答案：4   &a依旧代表首元素地址
+	printf("%d\n",sizeof(&a[0]));//4  取出第一个元素地址
+	printf("%d\n",sizeof(&a[0]+1));//4  第二个元素的地址
 	
-	}
-	for (i = 0; i < 10; i++)
-	{
-		printf("%d  ", arr[i]);
-	}
+	
+
+
+	//字符数组
+	char arr[] = {'a','b','c','d','e','f'};
+	printf("%d\n", sizeof(arr));// 6   arr是数组大小
+	printf("%d\n", sizeof(arr+0));//4   第一个元素地址 
+	printf("%d\n", sizeof(*arr));//1  arr是首元素地址  *arr就是首元素
+	printf("%d\n", sizeof(arr[1]));//1 第二个元素
+	printf("%d\n", sizeof(&arr));// 4 arr是整个数组的地址 依旧是4
+	printf("%d\n", sizeof(&arr + 1));//&arr是着整个数组的地址 +1 跳过整个数组后的地址 所以4
+	printf("%d\n", sizeof(&arr[0] + 1));//第二个元素的地址 依旧是4
 
 
 
+	printf("%d\n", strlen(arr));//随机值 单字符数组没有\0
+	printf("%d\n", strlen(arr + 0));//随机值  与上面理由相同
+	printf("%d\n", strlen(*arr));//*arr  首元素地址解引用  是首元素  值为a  strlen(a),ASCII 值为97 作为一个地址，这样非法访问的
+	printf("%d\n", strlen(arr[1]));//与上面的理由一样
+	printf("%d\n", strlen(&arr)); //随机值  取出的是整个数组的地址   没有\0
+	printf("%d\n", strlen(&arr + 1));//随机值 整个数组的地址加1 跳过整个数组
+	printf("%d\n", strlen(&arr[0] + 1));//随机值 第一个元素地址加1 依旧为随机值
+	
+	
+	char arr[] = "abcdef";
+	printf("%d\n", sizeof(arr));
+	printf("%d\n", sizeof(arr + 0));
+	printf("%d\n", sizeof(*arr));
+	printf("%d\n", sizeof(arr[1]));
+	printf("%d\n", sizeof(&arr)); 
+	printf("%d\n", sizeof(&arr + 1)); 
+	printf("%d\n", sizeof(&arr[0] + 1));
+	printf("%d\n", strlen(arr));
+	printf("%d\n", strlen(arr + 0));
+	printf("%d\n", strlen(*arr)); 
+	printf("%d\n", strlen(arr[1]));
+	printf("%d\n", strlen(&arr)); 
+	printf("%d\n", strlen(&arr + 1));
+	printf("%d\n", strlen(&arr[0] + 1));
+	
+	
+	char *p = "abcdef";
+	printf("%d\n", sizeof(p));
+	printf("%d\n", sizeof(p + 1));
+	printf("%d\n", sizeof(*p)); 
+	printf("%d\n", sizeof(p[0]));
+	printf("%d\n", sizeof(&p));
+	printf("%d\n", sizeof(&p + 1));
+	printf("%d\n", sizeof(&p[0] + 1));
+	printf("%d\n", strlen(p)); 
+	printf("%d\n", strlen(p + 1));
+	printf("%d\n", strlen(*p)); 
+	printf("%d\n", strlen(p[0]));
+	printf("%d\n", strlen(&p));
+	printf("%d\n", strlen(&p + 1));
+	printf("%d\n", strlen(&p[0] + 1));
+	//二维数组
+	int a[3][4] = {0}; 
+	printf("%d\n",sizeof(a));
+	printf("%d\n",sizeof(a[0][0])); 
+	printf("%d\n",sizeof(a[0]));
+	printf("%d\n",sizeof(a[0]+1));
+	printf("%d\n",sizeof(*(a[0]+1)));
+	printf("%d\n",sizeof(a+1));
+	printf("%d\n",sizeof(*(a+1)));
+	printf("%d\n",sizeof(&a[0]+1));
+	printf("%d\n",sizeof(*(&a[0]+1)));
+	printf("%d\n",sizeof(*a));
 	return 0;
 }
-
-*/
-
-
-
-
-
-
-/*
-extern   int Add(int x, int y);//函数声明
-int main()
-{
-	int a = 10;
-	int b = 20;
-	int c = Add(a, b);
-	int arr[10] = { 0 };
-	printf("%d\n", c);
-
-
-
-	int i = 0;
-	for (i = 0; i < 10; i++)
-	{
-		arr[i] = i;
-	}
-	for (i = 0; i < 10; i++)
-	{
-		printf("%d  ", arr[i]);
-	}
-	return 0;
-}
-
-*/
-
