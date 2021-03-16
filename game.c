@@ -1,96 +1,110 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-#include<stdio.h>
-#include<limits.h>
-#include<stdlib.h>
-#include<string.h>
-#include<math.h>
-#include<time.h>
+#include "game.h"
 
-/*
-//goto语句
-int main()
+//'1' - '0' = 1(数字1)
+//'3' - '0' = 3(数字3)
+//字符数字减去0 == 对应数字
+int get_mine_count(char mine[ROWS][COLS], int x, int y)
 {
+	return mine[x - 1][y] +
+		mine[x - 1][y - 1] +
+		mine[x][y - 1] +
+		mine[x + 1][y - 1] +
+		mine[x + 1][y] +
+		mine[x + 1][y + 1] +
+		mine[x][y + 1] +
+		mine[x - 1][y + 1] - 8 * '0';//将目标坐标周围的8个左边值（字符数字）加起来， 减去 8个字符‘0’ 减去一个不行
 
-	printf("hello  world\n");
-	goto again;
-	printf("傻逼\n");
-again:
-	printf("你好\n");
-
-	return 0;
 }
 
-*/
-
-
-
-
-
-/*
-//猜数字游戏
-//1.电脑会生成一个随机数
-//2猜数字
-void game()
+void InitBoard(char board[ROWS][COLS], int rows, int cols,char set)
 {
-	//1.生成一个随机数
-	int ret = 0;
-	int guess = 0;
-	//拿时间戳来设置随机数的生成起始点
-	//time_t time(time_t* time)库函数  
-	
-	//时间戳
-	//当前计算机时间 - 计算机的起始时间（1970.1.1.0：0：0） = （*****）秒
-	ret = rand()%100+1;//%100+1 为了生成的数字是0-100之间的数字
-	//rand库函数  作用生成随机数
-	printf("%d\n", ret);
-	//2.猜数字
-	while (1)
+	int i = 0;
+	int j = 0;
+	for (i = 0; i < rows; i++)
 	{
-		printf("请猜数字>:");
-		scanf("%d", &guess);
-		if (guess > ret)
+		for (j = 0; j < cols; j++)
 		{
-			printf("猜大了,王李阳嫁给我了\n");
+			board[i][j] = set;
 		}
-		else if (guess < ret)
+	}
+}
+void DisplayBoard(char board[ROWS][COLS], int row, int col)
+{
+	int i = 0;
+	int j = 0;
+	//打印列好
+	for (i = 0; i <= col; i++)
+	{
+		printf("%d ", i);
+	}
+	printf("\n");
+	for (i = 1; i <= row; i++)
+	{
+		printf("%d ", i);
+		for (j = 1; j <= col; j++)
 		{
-			printf("猜小了，想不想娶王李阳\n");
+			printf("%c ",board[i][j]);
+		}
+		printf("\n");
+	}
+}
+void SetMine(char board[ROWS][COLS], int row, int col)
+{
+	int count = EASY_COUNT;
+	while (count)
+	{
+		int x = rand() % row + 1;       
+		//1-9之间的数字  rand生成生成的随机数是0-327之间（待查）
+		//一个数字模9 模的结果在0-8之间再加1 正好为0-9
+		int y = rand() % col + 1;
+		if (board[x][y] == '0')
+		{
+			board[x][y] = '1';
+			count--;
+		}
+	}
+
+}
+void Find_Mine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
+{
+	int x = 0;
+	int y = 0;
+	int win = 0;
+	//9 * 9
+	printf("请输入排查雷的坐标>:");
+	scanf("%d %d", &x, &y);
+	while (win <row*col - EASY_COUNT)
+	{
+		if (x >= 1 && x <= row && y >= 1 && y <= col)
+		{
+			//坐标合法
+			//1.彩雷
+			if (mine[x][y] == '1')
+			{
+				printf("傻逼，被炸死了\n");
+				DisplayBoard(show, row, col);//显示棋盘
+				break;
+			}
+			//不是雷
+			else
+			{
+				//计算x，y周围有几个雷
+				int count = get_mine_count(mine, x, y);
+				show[x][y] = count + '0';
+				DisplayBoard(show, row,col);
+				break;
+			}
 		}
 		else
 		{
-			printf("猜对了，你可以娶王李阳了\n");
+			printf("输入的坐标不合法！\n");
 		}
-
-	}
-}
-void menu()
-{
-	printf("*********************************\n");
-	printf("***   1.paly      2.exit     ****\n");
-	printf("*********************************\n");
-}
-int main()
-{
-	int input = 0;
-	srand((unsigned int)time(NULL));
-	do
-	{
-		menu();
-		printf("请选择>:");
-		scanf("%d", &input);
-		switch (input)
+		if (win == row*col - EASY_COUNT)
 		{
-		case 1:
-			game();
-			break;
-		case 2:
-			printf("退出游戏！\n");
-			break;
-		default:
-			printf("选择错误！\n");
-			break;
+			printf("排雷成功！\n");
+			DisplayBoard(mine, row, col);
 		}
-	} while (input);
-	return 0;
+	}
+
 }
-*/

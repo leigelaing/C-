@@ -1,55 +1,61 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
+/*
+#include<stdio.h>
+#include "game.h"
+void game()
+{
+	//雷的信息存储（布置雷）
+	//1.布置好的雷的信息
+	char mine[ROWS][COLS] = { 0 };  //11 * 11
 
-#include"contact.h"
-
+	//2.排查出雷的信息
+	char show[ROWS][COLS] = { 0 };
+	//初始化
+	InitBoard(mine, ROWS, COLS,'0');
+	InitBoard(show, ROWS, COLS,'*');
+	//显示棋盘
+	//DisplayBoard(mine,ROW,COL);
+	DisplayBoard(show, ROW, COL);
+	//布置雷
+	SetMine(mine, ROW, COL);
+	//DisplayBoard(mine, ROW, COL);
+	//扫雷
+	Find_Mine(mine,show,ROW,COL);
+}
 void menu()
 {
-	printf("************************************\n");
-	printf("****1.add       2.del        *******\n");
-	printf("****3.search    4.modify     *******\n");
-	printf("****5.show      6.sort       *******\n");
-	printf("****      0.exit             *******\n");
-	printf("************************************\n");
-	printf("************************************\n");
-
+	printf("*************************************\n");
+	printf("***********  1.play   ***************\n");
+	printf("***********  0.exit   ***************\n");
+	printf("*************************************\n");
 }
-
-int main()
+void test()
 {
 	int input = 0;
-	//创建通讯录
-	struct  Contact con;  //con就是通讯录，里面包含：1000的元素的数和size
-	//初始化通讯录
-	InitContact(&con);
-
+	srand((unsigned int)time(NULL));
 	do
 	{
 		menu();
-		printf("请选择功能！:>");
-		scanf("%d ", &input);
+		printf("请选择>:\n");
+		scanf("%d", &input);
 		switch (input)
 		{
 		case 1:
-			AddContact(&con);
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			ShowContact(&con);
-			break;
-		case 6:
+			game();
 			break;
 		case 0:
-			printf("退出通讯录！\n");
+			printf("退出游戏！\n");
 			break;
 		default:
-			printf("选择错误，请重新选择！\n");
+			printf("输入错误\n");
 			break;
 		}
 	} while (input);
+}
+int main()
+{
+	test();
 	return 0;
 }
+
+*/
