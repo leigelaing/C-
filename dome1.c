@@ -1,11 +1,7 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<stdlib.h>
-#include<errno.h>
-
-
-
-
+#include<string.h>
+#include<assert.h>
 
 
 
@@ -17,186 +13,65 @@
 
 
 /*
-int main()
+//strstr 库函数学习——查找字符串
+//NULL——空指针   NUL/Nul  ——\0   
+//strstr函数  是从开始的那个地址开始一致往后打印  假设 abcdefign 中找def   但打印出来的是defign  
+//abcdefign 中找defh   这个是找不到的
+//abcdefabcdef   这种情况下返回的是defabcdef   是从第一个开始算起
+
+//模拟实现
+char*  my_strstr(const char* p1,const char* p2)
 {
-	//这个代码的问题在于，只分配了5个int型的空间，然而循环的需要放入10个元素，
-	//因此是对动态开辟的内存的越界访问
-	int* p = (int*)malloc(5 * sizeof(int));
-	if (p == NULL)
+	assert(p1 != NULL);
+	assert(p2 != NULL);
+	char* s1 = NULL;
+	char* s2 = NULL;
+	char* cur = (char*)p1;//将const 修饰的指针赋给不受保护的指针会有警告 所以需要强制类型转换一下
+	if (*p2 == '\0')
 	{
-		return 0;
-	}
-	else
-	{
-		int i = 0;
-		for (i = 0; i < 10; i++)
-		{
-			*(p + i) = i;
-		}
-	}
-	free(p);
-	p = NULL;
-	return 0;
-}
-*/
-
-
-
-
-
-//动态内存管理
-/*
-int main()
-{
-	//1.malloc函数有可能返回空指针，所以会出现对空指针的解引用操作
-	int* p = (int*)malloc(40);
-	
-	*p = 0;//err
-
-	//这样会出现的问题是，万一malloc函数开辟空间失败了，p就会被赋值为NULL
-	int i = 0;
-	for (i = 0; i < 10; i++)
-	{
-		*(p + i) = i;
-	}
-	free(p);
-	p = NULL;
-	return 0;
-}
-
-
-*/
-
-
-
-
-/*
-//realloc  作用调整动态开辟内存空间的大小
-int main()
-{
-	int* p = (int*)malloc(20);
-
-	if (p == NULL)
-	{
-		printf("%s\n", streeror(errno));
-	}
-	else
-	{
-		int i = 0;
-		for (i = 0; i < 5; i++)
-		{
-			*(p + i) = i;
-		}
-	    //就是在使用malloc开辟的20个字节空间
-		//假设这里20个字节不能满足我们的使用了
-		//希望我们能够有40个字节的空间
-		//这里就可以使用realloc来调整动态开辟的内存
+		return (char*)p1;//当 p2为空字符串时直接返回p1
 		
-		
-		
-		//   realloc  使用的注意事项
-		//1.如果p指向的空间之后有足够的空间可以追加，则直接追加，然后返回p
-		//2.如果p指向的空间之后没有足够的空间可以追加，则reallo函数会重新找一个新的内存区域
-		//开辟一块满足需求的空间，并把原来内存中的数据拷贝过来，释放旧的内存空间，最后返回新开辟内存空间的地址
-		//3.所以得用一个新的变量来接受realloc函数的返回值
 	}
-	int* ptr = realloc(p, INT_MAX);
-	if (ptr != NULL)
+	while (*cur) //cur放的是p1的首元素地址，如果为0 那就不用进入循环了，直接返回找不到
 	{
-		p = ptr;
-		int i = 0;
-		for (i = 5; i < 10; i++)
+		s1 = cur; //p1的首元素地址给s1
+		s2 = (char*)p2;   //p2的首元素地址给s2
+		//开始对比
+		while ((*s1 != '\0') && (*s2 != '\0') && (*s1 == *s2))
+			//首元素地址不能等于0  并且两个都还要相等
 		{
-			*(p + i) = i;
+			s1++;
+			s2++;
 		}
-		for (i = 0; i < 10; i++)
+		//对比到s2指向\0  
+		if (*s2 == '\0')
 		{
-			printf("%d\n", *(p2 + i));
+			return cur;//找到子串
 		}
+		if (*s1 == '\0')
+		{
+		return cur;//找到子串
+		}
+		     cur++; //循环条件有一个不能满足，重新开始
 	}
-	int i = 0;
-	for (i = 5; i < 10; i++)
-	{
-		 *(p + i) = i;
-	}
-	for (i = 0; i < 10; i++)
-	{
-		printf("%d\n", *(p2 + i));
-	}
-	//释放内存
-	free(p);
-	p = NULL;
-	return 0;
+	       return NULL;//找不到子串
 }
-*/
 
 
 
-
-
-/*
-calloc库函数学习
 int main()
 {
-	//malloc(10*sizeof(int));
-	int * p = (int*)calloc(10,sizeof(int));
-	if (p == NULL)
+	char* p1 = "abcdefjjjjj";
+	char* p2 = "def";
+	char* ret = my_strstr(p1, p2);//在p1中找p2字符串 
+	if (ret == NULL)
 	{
-		//打印错误原因的一个方式
-		printf("%s\n", streeror(errno));
+		printf("子串不存在\n");
 	}
 	else
 	{
-		int i = 0;
-		for (i = 0; i < 10; i++)
-		{
-			*(p + i) = i;
-		}
-		for (i = 0; i < 10; i++)
-		{
-			printf("%d\n", *(p + i));
-		}
-		//释放空间
-		//free函数是用来释放动态开辟的空间的
-		free(p);
-		p = NULL;
-	return 0;
-}
-*/
-
-
-
-
-
-/*
-//malloc和free   库函数的学习
-int main()
-{
-	//向内存申请10个整型的空间
-	int* p = (int*)malloc(10 * sizeof(int));
-	
-	if (p == NULL)
-	{
-		//打印错误原因的一个方式
-		printf("%s\n", streeror(errno));
+		printf("%s\n", ret);
 	}
-	else
-	{
-		//正常使用空间
-		int i = 0;
-		for (i = 0; i < 10; i++)
-		{
-			*(p + i) = i;
-		}
-		for (i = 0; i < 10; i++)
-		{
-			printf("%d\n", *(p + i));
-		}
-	}
-	//当动态申请的空间不再使用的时候
-	//就应该还给操作系统
-	free(p);//free释放了这段空间但p依旧有能力找到那段空间
-	p = NULL;//因此将p设为空指针
 	return 0;
 }
 
@@ -207,24 +82,71 @@ int main()
 
 
 /*
-struct S
-{
-	char name[20];
-	int age;
-};
 int main()
 {
-	int n = 0;
-	scanf("%d ", &n);
-	struct S arr[50];//50个struct S类型的数据
-	//30   不够
-	//60——浪费
-	struct S arr[n];//数组不能为变量
+    //strncmp _字符串比较
+	const char* p1 = "abcdef";
+	const char* p2 = "abcqwer";
+	int ret1 = strcmp(p1, p2);
+	int ret2 = strncmp(p1, p2,3);//p2的前4个字符串与p1进行比较
+	printf("%d\n",ret1);
+	printf("%d\n", ret2);
 	return 0;
-	//C语言可以创建变长数组—C99标准可以这样增加  但一致无法普及使用
-	//gcc编译器 支持C99标准
-	//
+}
+*/
 
 
+
+
+
+/*
+//strncat库函数的学习 
+//追加过程 有三种情况  追加的个数 大于arr2（如果大于arr2不论后面是什么情况只追加完成arr2中的内容然后再添\0就OK） 
+//小于arr2  等于arr2（这两种情况一致，追加完需要实际需要后，最后再添\0,OK）    
+int main()
+{
+	char arr1[30] = "hellow\0xxxxxxxxxx";
+	char arr2[] = "word";
+	strncat(arr1, arr2, 8);  //将arr2中的内容追加在arr1的后面，一共追加arr2中8个字符
+	printf("%s\n", arr1);
+	return 0;
+}
+
+*/
+
+
+
+
+
+
+
+/*
+
+//strcpy库函数学习  是 将arr2中的内容拷贝在arr1中，拷贝是覆盖。这个函数有问题在于，空间不够也可以完成拷贝
+int main()
+{
+	char arr1[5] = "abc";//arr1空间只有3个字节
+	char arr2[] = "hellow  bit";
+	strcpy(arr1, arr2);
+	printf("%s\n", arr1);
+	return 0;
+}
+*/
+
+
+/*
+//strncpy库函数的学习（有空模拟实现）
+int main()
+{
+	char arr1[10] = "abc";//arr1空间只有3个字节
+	char arr2[] = "hellow  bit";
+	strncpy(arr1, arr2,4);//将arr2中前4个字符拷贝在arr1中
+	//如果拷贝的arr1中的字符串够用，没有\0  
+	char arr1[10] = "abc";//
+	char arr2[] = " bit";
+	strncpy(arr1, arr2, 4);
+	//将arr2中前4个字符拷贝在arr1中，此时注意arr2中只有3个字符，要拷贝4个后面的利用\0补够要求
+	printf("%s\n", arr1);
+	return 0;
 }
 */
