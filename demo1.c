@@ -1,15 +1,26 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
 #include<stdio.h>
-#include<math.h>
-struct student
+#include<string.h>
+
+
+
+
+
+
+/*
+//题目描述
+//不使用累计乘法的基础上，通过位移运算（<<）实现2的n次方的计算
+//多组输入，每行输入整数n（0 <= n < 31）
+int main()
 {
-	int num;
-	char name[32];
-	float  score;
-
-}stu;//stu 叫结构体变量名
-
-
+	int n = 0;
+	while (scanf("%d", &n) != EOF)
+	{
+		printf("%d\n", 1 << n);  //将1右移几位就是几的2次方
+	}
+	return 0;
+}
+*/
 
 
 
@@ -18,46 +29,71 @@ struct student
 
 
 /*
-//打印菱形
-//   *
-//  ***
-// *****
-//  ***
-//   *
+//题目描述
+//输入一行数字，出生日期包括  年月日中间没有分隔符
+//三行  第一行为出生年份，第二行为月份，第三行为日期，输出时如果月份或者天数为1为时补零 
 int main()
 {
-	int line = 0;
-	scanf("%d", &line);
-	//打印上半部分
+	int y = 0;
+	int m = 0;
+	int d = 0;
+	scanf("%4d %2d %2d", &y, &m, &d);
+	printf("%d\n", y);
+	printf("%02d\n", m);//"%02d\n"  不够用0填充  域宽为2 
+	printf("%02d\n", d);
+	return 0;
+}
+
+*/
+
+
+
+
+
+/*
+//转换以下ASCII码对应的字符并输出他们
+//73,32,99,97,110,32,100,111,32,105,116,33
+int main()
+{
+	char arr[] = { 73, 32, 99, 97, 110, 32, 100, 111, 32, 105, 116, 33 };
 	int i = 0;
-	for (i = 0; i < line; i++)
+	for (i = 0; i < 12; i++)
 	{
-		//打印空格
-		int j = 0;
-		for (j = 0; j < line - 1 - i; j++)
-		{
-			printf(" ");
-		}
-		//打印*
-		for (j = 0; j < 2 * i + 1; j++)
-		{
-			printf("*");
-		}
-		    printf("\n");
+		printf("%c", arr[i]);
 	}
-	//打印下半部分
-	for (i = 0; i < line-1; i++)
+	return 0;
+}
+
+*/
+
+
+
+
+/*
+//输入一个字符，该字符构成三角金字塔
+//例：1
+//     1 
+//    1 1
+//   1 1 1
+int main()
+{
+	//输入
+	char n = 0;
+	scanf("%c", &n);
+	//输出
+	int i = 0;
+	for (i = 0; i < 5; i++)
 	{
-		//打印空格
+		//打印一行  先打印空格  再打印字符
 		int j = 0;
-		for (j = 0; j <=i ; j++)
+		for (j = 0; j <5-1-i ; j++)
 		{
 			printf(" ");
 		}
-		//打印*
-		for (j = 0; j <2*(line-1-i)-1 ; j++)
+		//打印1
+		for (j = 0; j <= i; j++)
 		{
-			printf("*");
+			printf("%c ",n);//注意%d  后面有个空格
 		}
 		printf("\n");
 	}
@@ -68,42 +104,30 @@ int main()
 
 
 
+
+
+
+
 /*
-//水仙花数，求出0—100000之间的水仙花数
-//水仙花数指的是三位数
-
-
-//本代码求自幂数   
-
+//从键盘任意输入一个字符，判断是否为字母
+//多组输入，每行输入包括一个字符
 int main()
 {
-	int i = 0;
-	for (i = 0; i <= 100000; i++)
+	int ch = 0;
+	//getchar函数获取不到字符时  输入的是EOF（end  of file 值为 -1）  
+	while ((ch = getchar()) != EOF)
 	{
-		//判断i是否为水仙花数（自幂数）
-		//1.计算i的位数—n位数
-		int n = 1;//数无论如何都是一位数  所以初始值为1
-		int tmp = i;
-		int sum = 0;
-		while (tmp /= 10)
+		//判断字母
+		if ((ch >= "A"&&ch <= "Z") || (ch >= "a"&&ch <= "z"))
 		{
-			n++;
-		       //i = i/10
+			printf("yes\n");
 		}
-			//123/10   n++   商不为零 n++计数
-			//12/10   n++
-		//2.计算i的每一位的n次方之和  sum
-		tmp = i;
-		while (tmp)
+		else
 		{
-			sum += pow(tmp % 10, n);
-			tmp /= 10;
+			printf("no\n");
 		}
-		//3.比较i == sum
-		if (i == sum)
-		{
-			printf("%d ", i);
-		}
+		//清理\n
+		getchar();
 	}
 	return 0;
 }
@@ -115,21 +139,16 @@ int main()
 
 
 /*
-//求Sn = a+aa+aaa+aaaa+aaaaa的前五项之和，其中a为一个数字
+//依次输入一个学生的学号，以及三科成绩
+//输出看代码
 int main()
 {
-	int a = 0;
-	int n = 0;
-	int sum = 0;
-	scanf("%d %d", &a, &n);
-	int i = 0;
-	int ret = 0;
-	for (i = 0; i < n; i++)
-	{
-		ret = ret * 10 + 2;
-		sum = sum + ret;
-	}
-	printf("%d\n", sum);
+	int num = 0;
+	float a = 0.0;
+	float b = 0.0;
+	float c = 0.0;
+	scanf("%d;%f, %f, %f ",&num,&a, &b, &c);
+	printf("%d;%.2f, %.2f, %.2f ", num, a, b, c);// %.2f输出结果为2位小数
 	return 0;
 }
 */
@@ -138,34 +157,37 @@ int main()
 
 
 /*
-#include<string.h>
-#include<assert.h>
-//写一个函数逆序字符串的内容
-void reverse(char* str)//str 指向  a
-{
-	assert(str);//这个意思不清楚
-	int len = strlen(str);//使用shrlen函数求出字符串大小
-	char* left = str;//首元素地址
-	char* right = str + len - 1;//  最后一个元素的元素地址
-	while (left < right)
-	{
-		char tmp = *left;
-		*left = *right;
-		*right = tmp;
-		left++;
-		right--;
-	}
-}
+//printf函数有返回值，写程序输出Hello world  的返回值
+//printf函数返回值是整型，返回的是字符的个数
 int main()
 {
-	char  arr[256] = { 0 };
-	//gets函数，读取一行内容
-	gets(arr);
-	//scanf函数遇见空格就不读取输入值了
-	//scanf("%s ", arr);//abcdef  ——fedcba
-	//逆序函数
-	reverse(arr);
-	printf("%s\n",arr);
+	printf("%d", printf("%d", printf("%d", 43)));//结果是  4321
+
+
+	//方法二
+	printf("\n %d \n", printf("Hello world!"));
+
+	//方法一
+   int ret = printf("Hello world!");
+   printf("\n");
+   printf("%d\n", ret);
+   return 0;
+}
+
+*/
+
+
+
+
+/*
+//写一个十六进制数ABCDEF，输出十进制  所占域宽为15
+int main()
+{
+	//域宽 ：域宽就是前面有几个空格，2个域宽是一个空格
+	printf("%d\n", 15);
+	printf("%4d\n", 15);
+	printf("%15d \n", 0XABCDEF);//注意16进制数前面加0X
+	//printf可以使用格式控制串"%md" 输出域宽为m的十进制整数
 	return 0;
 }
 */
@@ -174,20 +196,18 @@ int main()
 
 
 /*
+//sizeof—— 操作符
+int a = 10；
+sizeof（int）
+sizeof（a）
+
 int main()
 {
-	int arr[10] = { 1, 2, 3, 4, 5 };
-	int* p = arr;//arr代表首元素地址
-	//*(p + 2) == p[2] == > *(arr + 2) == arr[2]
-	int aa[2][5] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	
-	int* ptr1 = (int*)(&aa + 1);
-	//&aa  是取出整个二维数组的地址，加1跳过整个二维数组，然后再将数组强制类型转换为int* 
-	int* ptr2 = (int*)(*(aa + 1));
-	//首先aa代表第一行的数组名，加1 等于跳过一整行，再将地址强制类型转换为int*型
-	printf("%d %d\n", *(ptr1 - 1), *(ptr2 - 1));
-	//*(ptr1 - 1)  等于将ptr1指向往回指向一个int型，结果是指向10；
-	//*(ptr2 - 1)  等于ptr2此时指向6，然后再减一指向5，最后结果就是5 
+
+	printf("The size of short is %d bytes.\n",sizeof(short));
+	printf("The size of int is %d bytes.\n", sizeof(int));
+	printf("The size of long is %d bytes.\n", sizeof(long));
+	printf("The size of long long is %d bytes.\n", sizeof(long long));
 	return 0;
 }
 
@@ -196,19 +216,32 @@ int main()
 
 
 
+/*
+int main()
+{
+//    \t   tab  水平制表符     \040 ——\ddd    d是8进制数字
+//以32作为ASCII码值代表的字符
+
+	printf(" v     v\n  v   v\n    v\n ");
+
+	printf("v     v\n");
+	printf("  v   v\n");
+	printf("    v\n");
+	return 0;
+}
+
+*/
 
 
 
 
 /*
+输出：practice makes perfect!
+//在线OJ方式刷题
+#include<stdio.h>
 int main()
 {
-	int a[5][5];
-	int(*p)[4];
-	p = a;     //int(*)[4]—————————————int(*)[5]
-	printf("%p,%d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
-
+	printf("practice makes perfect!");
 	return 0;
 }
-
 */
