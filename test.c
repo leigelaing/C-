@@ -1,54 +1,44 @@
 #define  _CRT_SECURE_NO_WARNINGS 1
-#include"contact.h"
-void menu()
+#include<stdio.h>
+int main() 
 {
-	printf("********************************\n");
-	printf("*****  1.add    2.del      *****\n");
-	printf("*****  3.search  4.modify ******\n");
-	printf("********5.show   6.sort    *****\n");
-	printf("********* 0.exit            ****\n");
-	printf("********************************\n");
-
-}
-int main()
-{
-	//创建通讯录
-	struct Contact con;//con就是通讯录，里面包含：1000个元素和size；
-	//初始化通讯录
-	InitContast(&con);
-	int input = 0;
-	do
-	{
-		menu();
-		printf("请输入>:");
-		scanf("%d", &input);
-		switch (input)
-		{
-		case ADD:
-			AddContast(&con);
-			break;
-		case DEL:
-			DelContact(&con);
-			break;
-		case SEARCH:
-			SesrchContact(&con);
-			break;
-		case MODIFY:
-			ModifyContact(&con);
-			break;
-		case SHOW:
-			ShowContact(&con);
-			break;
-		case SORT:
-			SortContact(&con);
-			break;
-		case EXIT:
-			printf("退出通讯录！\n");
-			break;
-		default:
-			printf("选择错误！\n");
-			break;
-		}
-	} while (input);
+	int n = 9;
+	float *pFloat = (float *)&n;
+	printf("n的值为：%d\n", n);
+	printf("*pFloat的值为：%f\n", *pFloat);
+	*pFloat = 9.0;
+	printf("num的值为：%d\n", n);
+	printf("*pFloat的值为：%f\n", *pFloat);
 	return 0;
 }
+
+
+
+
+
+
+
+/*
+int main()
+{
+	double d = 1E10;
+	printf("%lf\n", d);
+	return 0;
+ }
+
+
+ */
+
+
+
+/*
+unsigned char i = 0;//char类型无符号数范围0 - 255  for循环条件恒成立  无限死循环
+int main()
+{
+	for (i = 0; i <= 255; i++) 
+	{
+		printf("hello world\n");
+	}
+	return 0;
+}
+*/
